@@ -8,9 +8,7 @@ function App() {
       <h1>Good Food</h1>
       <GoogleMap></GoogleMap>
     </div>
-    
   );
 }
-
 
 export default App;

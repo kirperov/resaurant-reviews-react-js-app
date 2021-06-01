@@ -1,7 +1,6 @@
 import { useRef, useEffect } from "react";
 
 const GoogleMap = ({ placeName }) => {
-    
     const googleMapRef = useRef();
     let googleMap;
     useEffect(() => {
@@ -24,6 +23,7 @@ const GoogleMap = ({ placeName }) => {
         disableDefaultUI: true,
       });
     };
+    
     const getLatLng = () => {
       let lat, lng, placeId;
       new window.google.maps.Geocoder().geocode(
@@ -52,10 +52,8 @@ const GoogleMap = ({ placeName }) => {
       <div
         id="google-map"
         ref={googleMapRef}
-        style={{ width: "400px", height: "300px" }}
       />
     );
   };
-  
 
 export default GoogleMap;
