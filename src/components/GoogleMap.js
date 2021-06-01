@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import style from '../assets/styles/map.module.css';
 
 const GoogleMap = ({ placeName }) => {
     const googleMapRef = useRef();
@@ -52,6 +53,7 @@ const GoogleMap = ({ placeName }) => {
       <div
         id="google-map"
         ref={googleMapRef}
+        className={style.map}
       />
     );
   };

@@ -1,12 +1,6 @@
+* {
+  margin: 0;
+}
 .App {
   text-align: center;
-}
-
-#map {
-  height: 100%;
-}
-
-#google-map {
-  width: 500px;
-  height: 500px;
 }

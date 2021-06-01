@@ -1,8 +1,13 @@
-import style from './header.module.css'
+import style from '../assets/styles/header.module.css';
+import logo from '../assets/images/logo.png';
 
 function Header() {
     return (
-        <div className={`${style.header} ${style.test}`}>Header</div>
+        <div className={style.header}>
+            <div className={style.logo}>
+                <img src={logo} alt='good food' />
+            </div>
+        </div>
     )
 }
 

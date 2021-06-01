@@ -1,0 +1,5 @@
+.list_restaurants {
+    display: flex;
+    width: 40%;
+    background-color: red;
+}

@@ -1,0 +1,14 @@
+.header {
+    background-color: rgba(209, 229, 255, 0.308);
+    height: 7em;
+}
+
+.logo {
+    margin: 10px;
+    position: relative;
+    float: left;
+}
+
+.logo img {
+    width: 90px;
+}
