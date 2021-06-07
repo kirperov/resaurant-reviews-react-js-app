@@ -1,11 +1,15 @@
-.list_restaurants {
+.container_restaurants {
     display: flex;
     width: 40%;
     background-color: red;
+    flex-direction: column;
 }
 
 .list_restaurants_items {
+    display: flex;
+    flex-direction: column;
     margin: .5em;
+ 
 }
 
 .list_restaurants_item {
@@ -23,21 +27,21 @@
 
 /********** Large devices only **********/
 @media (min-width: 992px) {
-    .list_restaurants {
+    .container_restaurants {
         width: 40%;
     }
 }
 
 /********** Medium devices only **********/
 @media (min-width: 768px) and (max-width: 991px) {
-    .list_restaurants {
+    .container_restaurants {
         width: 100%;
     }
 }
 
 /********** Mobile devices only **********/
 @media only screen and (max-width: 767px) {
-    .list_restaurants {
+    .container_restaurants {
         width: 100%;
     }
 }
