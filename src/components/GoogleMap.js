@@ -1,6 +1,7 @@
+import Geolocation from '../components/Geolocation';
+
 import { useRef, useEffect } from "react";
 import style from '../assets/styles/map.module.css';
-
 const GoogleMap = ({ placeName }) => {
     const googleMapRef = useRef();
     let googleMap, infoWindow;
@@ -12,8 +13,8 @@ const GoogleMap = ({ placeName }) => {
       googleMapScript.addEventListener("load", () => {
         getLatLng();
       });
-    }, []);
-  
+    });
+
   const createGoogleMap = (coordinates) => {
     googleMap = new window.google.maps.Map(googleMapRef.current, {
       zoom: 16,
@@ -50,6 +51,7 @@ const GoogleMap = ({ placeName }) => {
       }
     );
   };
+
 
   // Geolocation
   const createGeolocation = () => {

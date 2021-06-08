@@ -1,5 +1,4 @@
 import style from '../assets/styles/search.module.css';
-// import logo from '../assets/images/logo.png';
 
 function Search() {
     return (
