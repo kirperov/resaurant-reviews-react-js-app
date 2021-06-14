@@ -1,4 +1,3 @@
-import Geolocation from '../components/Geolocation';
 
 import { useRef, useEffect } from "react";
 import style from '../assets/styles/map.module.css';
@@ -70,6 +69,16 @@ const GoogleMap = ({ placeName }) => {
     });
 
     const initGeolocation = () => {
+      geocode();
+      function geocode() {
+        let location = "22 Main st Boston MA";
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+          console.log(JSON.parse(this.responseText))
+        }
+        xhttp.open("GET", `https://maps.googleapis.com/maps/api/geocode/json?address=Winnetka&key=${process.env.REACT_APP_API_KEY}`);
+        xhttp.send();
+      }
       // Try HTML5 geolocation.
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
