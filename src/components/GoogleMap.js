@@ -1,7 +1,7 @@
 
 import React from 'react'
-import { useRef, useEffect } from "react";
-import autoGeolocation from "../assets/js/autoGeolocation";
+import { useRef, useEffect, useState} from "react";
+// import autoGeolocation from "../assets/js/autoGeolocation";
 import style from '../assets/styles/map.module.css';
 import { restaurants } from '../assets/restaurants';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
@@ -13,17 +13,34 @@ const containerStyle = {
   height: '100%'
 };
 
-const center = {
-  lat: -3.745,
-  lng: -38.523
-};
 
-const options = { closeBoxURL: '', enableEventPropagation: true };
-  let autocomplete = null;
-
-function Map() {
 
   
+let autocomplete = null;
+  
+
+
+function Map() {
+  const [center, setCenter] = useState({
+    lat: 43.306112999999996,
+    lng: 5.3987991
+  });
+  window.onload = (event) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCenter({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        }
+      );
+    } else {
+      setCenter({ lat: center.lat, lng: center.lng});
+    }
+  
+  };
+console.log(center)
   const onLoad = (autocompleted) => {
     console.log('autocomplete: ', autocomplete)
     autocomplete = autocompleted
@@ -31,16 +48,16 @@ function Map() {
 
   const onPlaceChanged = () => {
     if (autocomplete !== null) {
-      console.log(autocomplete.getPlace())
+      console.log(autocomplete.getPlace().geometry.location.lat() +" " + autocomplete.getPlace().geometry.location.lng())
+     setCenter({ lat: autocomplete.getPlace().geometry.location.lat(), lng: autocomplete.getPlace().geometry.location.lng()});
     } else {
-      console.log(autocomplete)
       console.log('Autocomplete is not loaded yet!')
     }
   }
 
  
 
-const center = { lat: -28.024, lng: 140.887 }
+
 
 const restaurantsData = restaurants.map(restaurant => {
   return { lat: restaurant.lat, lng: restaurant.long };
@@ -92,13 +109,14 @@ function createKey(location) {
           >
             <input
               type="text"
-              placeholder="Customized your placeholder"
+              placeholder="Search address"
               style={{
                 boxSizing: `border-box`,
                 border: `1px solid transparent`,
                 width: `240px`,
                 height: `32px`,
-                padding: `0 12px`,
+                padding: `12px`,
+                margin: `12px`,
                 borderRadius: `3px`,
                 boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
                 fontSize: `14px`,
