@@ -18,6 +18,39 @@
     background: #ebebeb;
   }
 
+  .searchMsgError {
+    background-color: rgba(62, 136, 233, 0.863);
+    z-index: 100000;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    width: 240px;
+    display: none;
+    padding: 12px;
+    border-radius: 3px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    font-size: 14px;
+    text-overflow: ellipsis;
+    outline: none;
+    position: absolute;
+    left: 15em;
+    top: 9.8em;
+  }
+
+  .inputSearch {
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    width: 240px;
+    padding: 12px;
+    border-radius: 3px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    font-size: 14px;
+    outline: none;
+    text-overflow: ellipses;
+    position: absolute;
+    left: 15em;
+    top: 0.6em;
+  }
+  
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
     .map {
@@ -45,4 +78,14 @@
     .map {
         width: 100%;
     }
+
+    .searchMsgError {
+        left: 0.8em;
+        top: 13em;
+      }
+    
+      .inputSearch {
+        left: 0.8em;
+        top: 4em;
+      }
 }

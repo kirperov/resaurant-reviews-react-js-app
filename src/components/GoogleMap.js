@@ -13,12 +13,7 @@ const containerStyle = {
   height: '100%'
 };
 
-
-
-  
 let autocomplete = null;
-  
-
 
 function Map() {
   const [center, setCenter] = useState({
@@ -40,24 +35,27 @@ function Map() {
     }
   
   };
-console.log(center)
-  const onLoad = (autocompleted) => {
-    console.log('autocomplete: ', autocomplete)
-    autocomplete = autocompleted
+
+const onLoad = (autocompleted) => {
+  autocomplete = autocompleted;
+}
+
+const onPlaceChanged = () => {
+  try {
+    setCenter({ lat: autocomplete.getPlace().geometry.location.lat(), lng: autocomplete.getPlace().geometry.location.lng()});
+    hideMsgAddressError();
+  } catch (error) {
+    showMsgAddressError();
   }
+}
 
-  const onPlaceChanged = () => {
-    if (autocomplete !== null) {
-      console.log(autocomplete.getPlace().geometry.location.lat() +" " + autocomplete.getPlace().geometry.location.lng())
-     setCenter({ lat: autocomplete.getPlace().geometry.location.lat(), lng: autocomplete.getPlace().geometry.location.lng()});
-    } else {
-      console.log('Autocomplete is not loaded yet!')
-    }
-  }
+const showMsgAddressError = () => {
+  document.getElementById('search-msg-error').style.display = "block";
+}
 
- 
-
-
+const hideMsgAddressError = () => {
+    document.getElementById('search-msg-error').style.display = "none";
+}
 
 const restaurantsData = restaurants.map(restaurant => {
   return { lat: restaurant.lat, lng: restaurant.long };
@@ -69,7 +67,7 @@ const options = {
 }
 
 function createKey(location) {
-  return location.lat + location.lng
+  return location.lat + location.lng;
 }
 
   return (
@@ -79,6 +77,9 @@ function createKey(location) {
       libraries={["places"]}
     >
       <div className={style.map} >
+
+      <div id="search-msg-error" className={ style.searchMsgError }> Veillez choisir l'adresse dans la liste </div>
+        
         <GoogleMap
           id="InfoBox-example" 
           mapContainerStyle={containerStyle}
@@ -86,7 +87,6 @@ function createKey(location) {
           zoom={10}
         >
         <InfoBox
-          // onLoad={onLoad}
           options={options}
           position={center}
         >
@@ -108,26 +108,16 @@ function createKey(location) {
           onPlaceChanged={onPlaceChanged}
           >
             <input
+              onClick={hideMsgAddressError}
+              onChange={hideMsgAddressError}
+              id="inputSearch"
               type="text"
               placeholder="Search address"
-              style={{
-                boxSizing: `border-box`,
-                border: `1px solid transparent`,
-                width: `240px`,
-                height: `32px`,
-                padding: `12px`,
-                margin: `12px`,
-                borderRadius: `3px`,
-                boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-                fontSize: `14px`,
-                outline: `none`,
-                textOverflow: `ellipses`,
-                position: "absolute",
-                left: "50%",
-                marginLeft: "-120px"
-              }}
+              className={style.inputSearch}
             />
           </Autocomplete>
+
+
           { /* Child components, such as markers, info windows, etc. */ }
           <></>
         </GoogleMap>
