@@ -13,12 +13,12 @@
     overflow: hidden;
     height: 40px;
     cursor: pointer;
-  }
-  .custom-map-control-button:hover {
+}
+.custom-map-control-button:hover {
     background: #ebebeb;
-  }
+}
 
-  .searchMsgError {
+.searchMsgError {
     background-color: rgba(62, 136, 233, 0.863);
     z-index: 100000;
     box-sizing: border-box;
@@ -34,9 +34,9 @@
     position: absolute;
     left: 15em;
     top: 9.8em;
-  }
+}
 
-  .inputSearch {
+.inputSearch {
     box-sizing: border-box;
     border: 1px solid transparent;
     width: 240px;
@@ -49,8 +49,14 @@
     position: absolute;
     left: 15em;
     top: 0.6em;
-  }
-  
+}
+
+.infoBox {
+    background: yellow;
+    opacity: 0.75;
+    padding: 12;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
     .map {
@@ -82,10 +88,10 @@
     .searchMsgError {
         left: 0.8em;
         top: 13em;
-      }
-    
-      .inputSearch {
+    }
+
+    .inputSearch {
         left: 0.8em;
         top: 4em;
-      }
+    }
 }

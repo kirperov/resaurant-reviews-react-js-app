@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { useRef, useEffect, useState} from "react";
 // import autoGeolocation from "../assets/js/autoGeolocation";
@@ -15,11 +14,13 @@ const containerStyle = {
 
 let autocomplete = null;
 
-function Map() {
-  const [center, setCenter] = useState({
+const Map = ({parentCallback}) => {
+    const [center, setCenter] = useState({
     lat: 43.306112999999996,
     lng: 5.3987991
   });
+
+  const refMap = useRef(null);
   window.onload = (event) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -33,7 +34,6 @@ function Map() {
     } else {
       setCenter({ lat: center.lat, lng: center.lng});
     }
-  
   };
 
 const onLoad = (autocompleted) => {
@@ -47,6 +47,25 @@ const onPlaceChanged = () => {
   } catch (error) {
     showMsgAddressError();
   }
+}
+
+const checkBounds = () => {
+  let sortedListRestaurants = [];
+  var bounds = refMap.current.state.map.getBounds();
+  restaurants.filter((restaurant) => {
+    bounds.contains({ lat: restaurant.lat, lng: restaurant.long})
+})
+
+  for(let i=0; i< restaurants.length; i++) {
+    if(bounds.contains({ lat: restaurants[i].lat, lng:restaurants[i].long }) === true ) {
+      sortedListRestaurants.push(restaurants[i])
+    }
+    parentCallback(sortedListRestaurants);
+  }
+}
+
+const test = () =>  {
+  parentCallback(restaurants);
 }
 
 const showMsgAddressError = () => {
@@ -77,47 +96,47 @@ function createKey(location) {
       libraries={["places"]}
     >
       <div className={style.map} >
-
-      <div id="search-msg-error" className={ style.searchMsgError }> Veillez choisir l'adresse dans la liste </div>
-        
+        <div id="search-msg-error" className={ style.searchMsgError }> Veillez choisir l'adresse dans la liste </div>
         <GoogleMap
+          ref={refMap}
+          onDrag={ checkBounds }
+          options={options}
+          onLoad={test}
           id="InfoBox-example" 
           mapContainerStyle={containerStyle}
           center={center}
           zoom={10}
         >
-        <InfoBox
-          options={options}
-          position={center}
-        >
-          <div style={{ backgroundColor: 'yellow', opacity: 0.75, padding: 12 }}>
-            <div style={{ fontSize: 16, fontColor: `#08233B` }}>
-              You are here.
-            </div>
-          </div>
-        </InfoBox>
-        <MarkerClusterer options={options}>
-          {(clusterer) =>
-            restaurantsData.map((restaurantLocation) => (
-              <Marker key={createKey(restaurantLocation)} position={restaurantLocation} clusterer={clusterer} />
-            ))
-          }
-        </MarkerClusterer>
-        <Autocomplete
-          onLoad={onLoad}
-          onPlaceChanged={onPlaceChanged}
+          <InfoBox
+            options={options}
+            position={center}
           >
+            <div className={style.infoBox}>
+              <div style={{ fontSize: 16, fontColor: `#08233B` }}>
+                You are here.
+              </div>
+            </div>
+          </InfoBox>
+          <MarkerClusterer options={options}>
+            {(clusterer) =>
+              restaurantsData.map((restaurantLocation) => (
+                <Marker key={createKey(restaurantLocation)} position={restaurantLocation} clusterer={clusterer} />
+              ))
+            }
+          </MarkerClusterer>
+          <Autocomplete
+            onLoad={onLoad}
+            onPlaceChanged={onPlaceChanged}
+            >
             <input
               onClick={hideMsgAddressError}
               onChange={hideMsgAddressError}
               id="inputSearch"
               type="text"
-              placeholder="Search address"
+              placeholder={`Search address`}
               className={style.inputSearch}
             />
           </Autocomplete>
-
-
           { /* Child components, such as markers, info windows, etc. */ }
           <></>
         </GoogleMap>
