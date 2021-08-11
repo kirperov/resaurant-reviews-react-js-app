@@ -16,7 +16,7 @@ function ErrorFallback({error}) {
 }
 
 const MapSection = () => {
-  const [sortedRestaurants, setRestaurants] = useState({});
+  const [sortedRestaurants, setRestaurants] = useState([]);
   const callback = (restaurantData) => {
     setRestaurants(restaurantData)
   }

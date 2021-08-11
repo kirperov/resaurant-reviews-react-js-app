@@ -49,23 +49,19 @@ const onPlaceChanged = () => {
   }
 }
 
-const checkBounds = () => {
-  let sortedListRestaurants = [];
-  var bounds = refMap.current.state.map.getBounds();
-  restaurants.filter((restaurant) => {
-    bounds.contains({ lat: restaurant.lat, lng: restaurant.long})
-})
 
-  for(let i=0; i< restaurants.length; i++) {
-    if(bounds.contains({ lat: restaurants[i].lat, lng:restaurants[i].long }) === true ) {
-      sortedListRestaurants.push(restaurants[i])
-    }
-    parentCallback(sortedListRestaurants);
-  }
+const checkBounds = () => {
+
+  let bounds = refMap.current.state.map.getBounds();
+  
+  let sortedListRestaurants = restaurants.filter(restaurant => 
+    bounds.contains({ lat: restaurant.lat, lng: restaurant.long})
+)
+  parentCallback(sortedListRestaurants);
 }
 
-const test = () =>  {
-  parentCallback(restaurants);
+const test = (mapInstance) => {
+  console.log(mapInstance)
 }
 
 const showMsgAddressError = () => {
@@ -99,9 +95,10 @@ function createKey(location) {
         <div id="search-msg-error" className={ style.searchMsgError }> Veillez choisir l'adresse dans la liste </div>
         <GoogleMap
           ref={refMap}
-          onDrag={ checkBounds }
-          options={options}
+      
+          onBoundsChanged={checkBounds}
           onLoad={test}
+          options={options}
           id="InfoBox-example" 
           mapContainerStyle={containerStyle}
           center={center}
