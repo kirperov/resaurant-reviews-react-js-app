@@ -21,6 +21,11 @@ const MapSection = () => {
     setRestaurants(restaurantData)
   }
 
+  // for(let i = 0; i < sortedRestaurants.length; i++) {
+  //   for(let n = 0; n < sortedRestaurants[i].ratings.length; n++ ) {
+  //     console.log(sortedRestaurants[i].ratings[n])
+  //   }
+  // }
     return (
         <div>
              <div className={style.map_section}>

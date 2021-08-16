@@ -6,11 +6,15 @@ export const restaurants = [
        "long":2.3501649,
        "ratings":[
             {
-                "stars":4,
+                "stars":6,
                 "comment":"Un excellent restaurant, j'y reviendrai ! Par contre il vaut mieux aimer la viande."
             },
             {
-                "stars":5,
+                "stars":9,
+                "comment":"Tout simplement mon restaurant préféré !"
+            },   
+            {
+                "stars":9,
                 "comment":"Tout simplement mon restaurant préféré !"
             }
        ]
@@ -22,7 +26,7 @@ export const restaurants = [
         "long":2.3442197,
         "ratings":[
             {
-                "stars":5,
+                "stars":7,
                 "comment":"Une minuscule pizzeria délicieuse cachée juste à côté du Sacré choeur !"
             },
             {

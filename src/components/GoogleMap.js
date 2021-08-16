@@ -49,19 +49,13 @@ const onPlaceChanged = () => {
   }
 }
 
-
 const checkBounds = () => {
 
   let bounds = refMap.current.state.map.getBounds();
-  
   let sortedListRestaurants = restaurants.filter(restaurant => 
     bounds.contains({ lat: restaurant.lat, lng: restaurant.long})
 )
   parentCallback(sortedListRestaurants);
-}
-
-const test = (mapInstance) => {
-  console.log(mapInstance)
 }
 
 const showMsgAddressError = () => {
@@ -97,7 +91,6 @@ function createKey(location) {
           ref={refMap}
       
           onBoundsChanged={checkBounds}
-          onLoad={test}
           options={options}
           id="InfoBox-example" 
           mapContainerStyle={containerStyle}
