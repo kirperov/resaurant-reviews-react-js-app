@@ -1,6 +1,7 @@
 import style from '../assets/styles/list_restaurants.module.css';
 import DetailRestaurant from '../components/DetailRestaurant';
 import Search from '../components/Search';
+import ReviewRestaurant from '../components/ReviewRestaurant';
 
 const ListRestaurants = (sortedRestaurants) => {
 
@@ -16,17 +17,8 @@ const average = (array) =>
             <div className={style.restaurant_infos}>
                 <span>{restaurant.restaurantName}</span>
                 <span>Address: {restaurant.address}</span>
-                { arr.length = 0 }
-                <span> Rating:
-                    {
-                        restaurant.ratings.map(rating => {
-                            
-                            arr.push(rating.stars)
-                        })
-                    }
-
-                    { average(arr) } 
-                    </span>
+                <ReviewRestaurant restaurantRating={restaurant.ratings}></ReviewRestaurant>
+               
             </div>
             <DetailRestaurant selectedRestaurant={restaurant}></DetailRestaurant>
         </div>
