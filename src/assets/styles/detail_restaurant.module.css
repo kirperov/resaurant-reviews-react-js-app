@@ -10,6 +10,7 @@
     padding: 0.2em;
     display: flex;
     flex-direction: column;
+    background-color: rgb(255, 255, 255);
     border: rgb(143, 143, 143) 1px solid;
     border-radius: 0.5em;
     margin-bottom: 0.5em;

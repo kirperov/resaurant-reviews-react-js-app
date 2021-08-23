@@ -4,7 +4,6 @@ import Search from '../components/Search';
 import ReviewRestaurant from '../components/ReviewRestaurant';
 
 const ListRestaurants = (sortedRestaurants) => {
-
     const listItems = sortedRestaurants.listRestaurants.map((restaurant, index) =>
     <div key={restaurant.restaurantName}>
         <div className={style.list_restaurants_item}>
@@ -13,13 +12,14 @@ const ListRestaurants = (sortedRestaurants) => {
                 <span>Address: {restaurant.address}</span>
                 <ReviewRestaurant restaurantRating={restaurant.ratings}></ReviewRestaurant>
             </div>
-            <div className={style.restaurant_rating} ><DetailRestaurant selectedRestaurant={restaurant}></DetailRestaurant></div>
+            <div className={style.restaurant_rating} >
+                <DetailRestaurant selectedRestaurant={restaurant} />
+            </div>
         </div>
     </div>
 );
 
     return (
-        
         <div className={style.container_restaurants}>
             <Search></Search>
             <div className={style.list_restaurants_items}>

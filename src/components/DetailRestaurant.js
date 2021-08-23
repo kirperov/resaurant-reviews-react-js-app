@@ -10,15 +10,25 @@ const DetailRestaurant = (selectedRestaurant) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-		// see https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPanoramaOptions
-		const streetViewPanoramaOptions = {
-			position: {lat: selectedRestaurant.selectedRestaurant.lat, lng: selectedRestaurant.selectedRestaurant.long},
-			pov: {heading: 100, pitch: 0},
-			zoom: 1
-		};
+  // see https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPanoramaOptions
+  const streetViewPanoramaOptions = {
+    position: {lat: selectedRestaurant.selectedRestaurant.lat, lng: selectedRestaurant.selectedRestaurant.long},
+    pov: {heading: 100, pitch: 0},
+    zoom: 1
+  };
 
   const listItems = 
   <div className={style.detail_restaurant_container} key={selectedRestaurant.selectedRestaurant.restaurantName}>
+      <div style={{
+        width: '100%',
+        height: '450px',
+        backgroundColor: '#eeeeee'
+      }}>
+      <ReactStreetview
+        apiKey={process.env.REACT_APP_API_KEY}
+        streetViewPanoramaOptions={streetViewPanoramaOptions}
+      />
+    </div>
     <div className={style.detail_restaurant_address}>
       <span><strong>Address: </strong></span> <span>{selectedRestaurant.selectedRestaurant.address}</span></div>
     <div className={style.detail_restaurant_comments}>
@@ -36,21 +46,10 @@ const DetailRestaurant = (selectedRestaurant) => {
                     starDimension="1em"
                     name='rating'
                   />{ rating.comment }
-
                 );
                 </div>
         })
       }
-    </div>
-    <div style={{
-      width: '100%',
-      height: '450px',
-      backgroundColor: '#eeeeee'
-    }}>
-      <ReactStreetview
-        apiKey={process.env.REACT_APP_API_KEY}
-        streetViewPanoramaOptions={streetViewPanoramaOptions}
-      />
     </div>
   </div>
  
