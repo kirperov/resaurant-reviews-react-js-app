@@ -6,7 +6,7 @@ import ReviewRestaurant from '../components/ReviewRestaurant';
 const ListRestaurants = (sortedRestaurants) => {
 
 let arr = []
-
+ 
 const average = (array) => 
     array.reduce((a, b) => a + b) / array.length
 
