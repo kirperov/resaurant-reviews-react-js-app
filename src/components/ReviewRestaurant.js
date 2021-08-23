@@ -9,15 +9,13 @@ restaurantRating.restaurantRating.map(rating => arr.push(rating.stars))
 
     return (
         <div>
-            <div> 
-                <StarRatings
-                    rating={average(arr)}
-                    starRatedColor="blue"
-                    changeRating={average(arr)}
-                    numberOfStars={5}
-                    name='rating'
-                    />
-            </div>
+            <StarRatings
+                rating={average(arr)}
+                starRatedColor="blue"
+                numberOfStars={5}
+                starDimension="2em"
+                name='rating'
+            />
         </div>
     )
 }

@@ -5,12 +5,6 @@ import ReviewRestaurant from '../components/ReviewRestaurant';
 
 const ListRestaurants = (sortedRestaurants) => {
 
-let arr = []
- 
-const average = (array) => 
-    array.reduce((a, b) => a + b) / array.length
-
-
     const listItems = sortedRestaurants.listRestaurants.map((restaurant, index) =>
     <div key={restaurant.restaurantName}>
         <div className={style.list_restaurants_item}>
@@ -18,9 +12,8 @@ const average = (array) =>
                 <span>{restaurant.restaurantName}</span>
                 <span>Address: {restaurant.address}</span>
                 <ReviewRestaurant restaurantRating={restaurant.ratings}></ReviewRestaurant>
-               
             </div>
-            <DetailRestaurant selectedRestaurant={restaurant}></DetailRestaurant>
+            <div className={style.restaurant_rating} ><DetailRestaurant selectedRestaurant={restaurant}></DetailRestaurant></div>
         </div>
     </div>
 );
