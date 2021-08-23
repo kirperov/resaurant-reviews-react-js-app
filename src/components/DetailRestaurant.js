@@ -1,13 +1,21 @@
+import React from 'react';
 import { useState } from "react";
 import style from '../assets/styles/detail_restaurant.module.css';
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button';
 import StarRatings from 'react-star-ratings';
+import ReactStreetview from 'react-streetview';
 
 const DetailRestaurant = (selectedRestaurant) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+		// see https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPanoramaOptions
+		const streetViewPanoramaOptions = {
+			position: {lat: selectedRestaurant.selectedRestaurant.lat, lng: selectedRestaurant.selectedRestaurant.long},
+			pov: {heading: 100, pitch: 0},
+			zoom: 1
+		};
 
   const listItems = 
   <div className={style.detail_restaurant_container} key={selectedRestaurant.selectedRestaurant.restaurantName}>
@@ -28,9 +36,21 @@ const DetailRestaurant = (selectedRestaurant) => {
                     starDimension="1em"
                     name='rating'
                   />{ rating.comment }
+
+                );
                 </div>
         })
       }
+    </div>
+    <div style={{
+      width: '100%',
+      height: '450px',
+      backgroundColor: '#eeeeee'
+    }}>
+      <ReactStreetview
+        apiKey={process.env.REACT_APP_API_KEY}
+        streetViewPanoramaOptions={streetViewPanoramaOptions}
+      />
     </div>
   </div>
  
