@@ -1,12 +1,9 @@
 import React from 'react'
-import { useRef, useEffect, useState} from "react";
-// import autoGeolocation from "../assets/js/autoGeolocation";
+import { useRef, useState} from "react";
 import style from '../assets/styles/map.module.css';
 import { restaurants } from '../assets/restaurants';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
-import { InfoBox } from '@react-google-maps/api';
-import { MarkerClusterer, Marker  } from '@react-google-maps/api';
-import { Autocomplete } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, MarkerClusterer, Marker,Autocomplete, InfoBox } from '@react-google-maps/api';
+ 
 
 const containerStyle = {
   height: '100%'
@@ -50,7 +47,6 @@ const onPlaceChanged = () => {
 }
 
 const checkBounds = () => {
-
   let bounds = refMap.current.state.map.getBounds();
   let sortedListRestaurants = restaurants.filter(restaurant => 
     bounds.contains({ lat: restaurant.lat, lng: restaurant.long})

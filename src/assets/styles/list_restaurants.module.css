@@ -1,6 +1,6 @@
 .container_restaurants {
     display: flex;
-    width: 40%;
+ 
     background-color: #B789F0;
     flex-direction: column;
 }
@@ -35,7 +35,7 @@
 /********** Large devices only **********/
 @media (min-width: 992px) {
     .container_restaurants {
-        width: 40%;
+        width: 100%;
     }
 }
 

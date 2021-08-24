@@ -1,6 +1,5 @@
 import style from '../assets/styles/list_restaurants.module.css';
 import DetailRestaurant from '../components/DetailRestaurant';
-import Search from '../components/Search';
 import ReviewRestaurant from '../components/ReviewRestaurant';
 
 const ListRestaurants = (sortedRestaurants) => {
@@ -21,7 +20,6 @@ const ListRestaurants = (sortedRestaurants) => {
 
     return (
         <div className={style.container_restaurants}>
-            <Search></Search>
             <div className={style.list_restaurants_items}>
                 {listItems}
             </div>
