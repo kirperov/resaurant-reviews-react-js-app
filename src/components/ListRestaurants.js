@@ -1,9 +1,11 @@
 import style from '../assets/styles/list_restaurants.module.css';
 import DetailRestaurant from '../components/DetailRestaurant';
 import ReviewRestaurant from '../components/ReviewRestaurant';
+import { useState } from "react";
 
-const ListRestaurants = (sortedRestaurants) => {
-    const listItems = sortedRestaurants.listRestaurants.map((restaurant, index) =>
+const ListRestaurants = (props) => {
+    // console.log(props.filterSelected)
+    const listItems = props.listRestaurants.map((restaurant, index) =>
     <div key={restaurant.restaurantName}>
         <div className={style.list_restaurants_item}>
             <div className={style.restaurant_infos}>

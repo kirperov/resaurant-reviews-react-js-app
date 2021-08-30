@@ -3,14 +3,15 @@ import { useState } from "react";
 
 const Filter = ({callbackFilter}) => {
     const [filterMin, setFilterMin] = useState(1);
-    const [filterMax, setFilterMax] = useState(5);
+    const [filterMax, setFilterMax] = useState(1);
+
     const handleChangeMin = event => {
-        setFilterMin(event.target.value)
+        setFilterMin(parseInt(event.target.value))
         event.preventDefault();
     }
 
     const handleChangeMax = event => {
-        setFilterMax(event.target.value)
+        setFilterMax(parseInt(event.target.value))
         event.preventDefault()
     }
 
