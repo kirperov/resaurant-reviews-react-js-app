@@ -4,6 +4,7 @@ import ListRestaurants from '../components/ListRestaurants';
 import style from '../assets/styles/map_section.module.css';
 import {ErrorBoundary} from 'react-error-boundary'
 import Filter from '../components/Filter';
+import { restaurants } from "../assets/restaurants";
 
 function ErrorFallback({error}) {
   return (
@@ -17,36 +18,41 @@ function ErrorFallback({error}) {
 const MapSection = () => {
   const [sortedRestaurants, setRestaurants] = useState([]);
   const [minMax, setMinMax] = useState([1,1]);
+  const [filteredData, setFilteredData] = useState([]);
   const callback = (restaurantData) => {
-    setRestaurants(restaurantData)
+    // newList.push(restaurantData)
+    console.log(restaurantData)
   }
 
   const callbackForFilter = (min, max) => {
     setMinMax([min, max])
   }
  
-  sortedRestaurants.map((restaurant, index) =>
+  restaurants.map((restaurant, index) =>
     console.log(restaurant.ratings)
   );
 
- sortedRestaurants.map(obj => {
+  const newList = [];
+  restaurants.map(obj => {
   const arr = []
   const average = (array) => array.reduce((a, b) => a + b) / array.length;
-     for(let i = 0; i < obj.ratings.length; i++) {
+    for(let i = 0; i < obj.ratings.length; i++) {
       arr.push(obj.ratings[i].stars)
-     }
-     console.log(average(arr))
+    }
+    
+    if(average(arr) >= minMax[0] && average(arr) <= minMax[1]) {
+      newList.push(obj)
+    }
  })
-
 
   return (
     <div>
         <div className={style.map_section}>
-          <Map parentCallback={callback}></Map>
+          <Map newListRestaurants={newList} parentCallback={callback}></Map>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <div className={style.list_restaurants}>
               <Filter callbackFilter={callbackForFilter} />
-              <ListRestaurants listRestaurants={sortedRestaurants} filterSelected={minMax}/> 
+              <ListRestaurants listRestaurants={newList} filterSelected={minMax}/> 
             </div>
           </ErrorBoundary>
         </div>

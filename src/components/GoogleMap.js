@@ -3,7 +3,6 @@ import { useRef, useState} from "react";
 import style from '../assets/styles/map.module.css';
 import { restaurants } from '../assets/restaurants';
 import { GoogleMap, LoadScript, MarkerClusterer, Marker,Autocomplete, InfoBox } from '@react-google-maps/api';
- 
 
 const containerStyle = {
   height: '100%'
@@ -11,7 +10,8 @@ const containerStyle = {
 
 let autocomplete = null;
 
-const Map = ({parentCallback}) => {
+const Map = (props) => {
+
     const [center, setCenter] = useState({
     lat: 43.306112999999996,
     lng: 5.3987991
@@ -48,10 +48,15 @@ const onPlaceChanged = () => {
 
 const checkBounds = () => {
   let bounds = refMap.current.state.map.getBounds();
-  let sortedListRestaurants = restaurants.filter(restaurant => 
+  let sortedListRestaurants;
+  
+    sortedListRestaurants = props.newListRestaurants;
+  
+
+    sortedListRestaurants.filter(restaurant => 
     bounds.contains({ lat: restaurant.lat, lng: restaurant.long})
 )
-  parentCallback(sortedListRestaurants);
+  props.parentCallback(sortedListRestaurants);
 }
 
 const showMsgAddressError = () => {
@@ -62,7 +67,7 @@ const hideMsgAddressError = () => {
     document.getElementById('search-msg-error').style.display = "none";
 }
 
-const restaurantsData = restaurants.map(restaurant => {
+const restaurantsData = props.newListRestaurants.map(restaurant => {
   return { lat: restaurant.lat, lng: restaurant.long };
 })
 
