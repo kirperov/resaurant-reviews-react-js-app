@@ -4,7 +4,6 @@ import ReviewRestaurant from '../components/ReviewRestaurant';
 import { useState } from "react";
 
 const ListRestaurants = (props) => {
-    // console.log(props.filterSelected)
     const listItems = props.listRestaurants.map((restaurant, index) =>
     <div key={restaurant.restaurantName}>
         <div className={style.list_restaurants_item}>

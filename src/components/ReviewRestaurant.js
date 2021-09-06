@@ -1,7 +1,6 @@
 import StarRatings from 'react-star-ratings';
 
 const ReviewRestaurant = (restaurantRating) => {
-
 const arr = []
 const average = (array) => array.reduce((a, b) => a + b) / array.length;
 

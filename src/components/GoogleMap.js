@@ -48,15 +48,10 @@ const onPlaceChanged = () => {
 
 const checkBounds = () => {
   let bounds = refMap.current.state.map.getBounds();
-  let sortedListRestaurants;
-  
-    sortedListRestaurants = props.newListRestaurants;
-  
-
-    sortedListRestaurants.filter(restaurant => 
+  let sortedListRestaurants = props.newListRestaurants.filter(restaurant => 
     bounds.contains({ lat: restaurant.lat, lng: restaurant.long})
-)
-  props.parentCallback(sortedListRestaurants);
+  )
+  props.mapCallback(sortedListRestaurants);
 }
 
 const showMsgAddressError = () => {
@@ -90,7 +85,6 @@ function createKey(location) {
         <div id="search-msg-error" className={ style.searchMsgError }> Veillez choisir l'adresse dans la liste </div>
         <GoogleMap
           ref={refMap}
-      
           onBoundsChanged={checkBounds}
           options={options}
           id="InfoBox-example" 
