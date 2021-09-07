@@ -17,36 +17,38 @@ function ErrorFallback({error}) {
 
 const MapSection = () => {
 
-  const [minMax, setMinMax] = useState([1,1]);
+
   const [restaurantsList, setRestaurantsList] = useState(restaurants);
   const [filteredRestorantsMap, setFilteredRestorantsMap] = useState([]);
-  console.log(filteredRestorantsMap)
+
   const mapCallbackData = (restaurantData) => {
     setFilteredRestorantsMap(restaurantData);
   }
 
-  const callbackMaxMinFilter = (min, max) => {
-    setMinMax([min, max]);
-    getAverageRatingRestaurants(restaurants);
+  const callbackMaxFilter = (min, max) => {
+
+    // setFilterMax(max);
+    getAverageRatingRestaurants(restaurants,min, max);
+
   }
 
-  const getAverageRatingRestaurants = (listOfRestaurants) => {
-    const average = (array) => array.reduce((a, b) => a + b) / array.length;
- 
-
+  const getAverageRatingRestaurants = (listOfRestaurants,min, max) => {
+  const average = (array) => array.reduce((a, b) => a + b) / array.length;
+  
+    let listRestorants = [];
     listOfRestaurants.map(restaurant => {
       const restaurantListStars = [];
  
       for(let i = 0; i < restaurant.ratings.length; i++) {
         restaurantListStars.push(restaurant.ratings[i].stars);
       }
-      for(let y = 0; y < filteredRestorantsMap.length; y ++) {
-        if(average(restaurantListStars) >= minMax[0] && average(restaurantListStars) <= minMax[1]) {
-          setFilteredRestorantsMap([restaurant]);
-        }
+
+      if(average(restaurantListStars) >= min && average(restaurantListStars) <= max) {
+        listRestorants.push(restaurant);
       }
     })
- 
+    setFilteredRestorantsMap(listRestorants);
+    setRestaurantsList(listRestorants);
   }
 
 
@@ -56,8 +58,8 @@ const MapSection = () => {
           <ErrorBoundary FallbackComponent={ErrorFallback}>
           <Map newListRestaurants={restaurantsList} mapCallback={mapCallbackData} />
             <div className={style.list_restaurants}>
-              <Filter callbackFilter={callbackMaxMinFilter} />
-              <ListRestaurants listRestaurants={filteredRestorantsMap} filterSelected={minMax} />
+              <Filter callbackFilter={callbackMaxFilter}/>
+              <ListRestaurants listRestaurants={filteredRestorantsMap} />
             </div>
           </ErrorBoundary>
         </div>

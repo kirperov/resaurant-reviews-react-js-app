@@ -1,29 +1,25 @@
 import style from '../assets/styles/filter.module.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Filter = ({callbackFilter}) => {
     const [filterMin, setFilterMin] = useState(1);
-    const [filterMax, setFilterMax] = useState(1);
+    const [filterMax, setFilterMax] = useState(5);
 
     const handleChangeMin = event => {
         setFilterMin(parseInt(event.target.value))
-        event.preventDefault();
     }
 
     const handleChangeMax = event => {
         setFilterMax(parseInt(event.target.value))
-        event.preventDefault()
     }
 
-    const handleSubmit = event => {
+    useEffect(() => {
         callbackFilter(filterMin, filterMax)
-        event.preventDefault();
-    }
-
+    },[filterMin, filterMax])
     return (
         <div className={style.filter_container}>
             <label>Filter by stars </label>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <span>Min </span>
                 <select onChange={handleChangeMin}>
                     <option value="1">1</option>
@@ -40,7 +36,6 @@ const Filter = ({callbackFilter}) => {
                     <option value="4">4</option>
                     <option value="5">5</option>
                 </select>
-                <input type="submit" value="Filter"/>
             </form>
         </div>
     )
