@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import style from '../assets/styles/detail_restaurant.module.css';
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button';
@@ -11,6 +11,18 @@ const DetailRestaurant = (selectedRestaurant) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [newRating, setNewRating] = useState(0);
+  const [newComment, setNewComment] = useState();
+
+  const updateRestaurant = () => {
+    selectedRestaurant.selectedRestaurant.ratings.push({stars: newRating, comment: newComment})
+  };
+
+  const getCallbackReview = (rating, comment) => {
+    setNewRating(rating);
+    setNewComment(comment);
+  };
+
   // see https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPanoramaOptions
   const streetViewPanoramaOptions = {
     position: {lat: selectedRestaurant.selectedRestaurant.lat, lng: selectedRestaurant.selectedRestaurant.long},
@@ -33,7 +45,11 @@ const DetailRestaurant = (selectedRestaurant) => {
     <div className={style.detail_restaurant_address}>
       <span><strong>Address: </strong></span> <span>{selectedRestaurant.selectedRestaurant.address}</span></div>
     <div className={style.detail_restaurant_comments}>
-    <AddReview/>
+    <AddReview callbackReviw={getCallbackReview}/>
+          <Button variant="primary" onClick={updateRestaurant}>
+          Add new review
+      </Button>
+
       <div>
         <span><strong>Comments: </strong></span>
       </div>
@@ -48,7 +64,6 @@ const DetailRestaurant = (selectedRestaurant) => {
                     starDimension="1em"
                     name='rating'
                   />{ rating.comment }
-                );
                 </div>
         })
       }
@@ -67,6 +82,7 @@ const DetailRestaurant = (selectedRestaurant) => {
         </Modal.Header>
         <Modal.Body>
           { listItems }
+
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

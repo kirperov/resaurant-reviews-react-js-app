@@ -12,7 +12,7 @@ const ListRestaurants = (props) => {
                 <span>Address: {restaurant.address}</span>
                 <ReviewRestaurant restaurantRating={restaurant.ratings}></ReviewRestaurant>
             </div>
-            <div className={style.restaurant_rating} >
+            <div className={style.restaurant_rating}>
                 <DetailRestaurant selectedRestaurant={restaurant} />
             </div>
         </div>

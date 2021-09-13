@@ -16,8 +16,6 @@ function ErrorFallback({error}) {
 }
 
 const MapSection = () => {
-
-
   const [restaurantsList, setRestaurantsList] = useState(restaurants);
   const [filteredRestorantsMap, setFilteredRestorantsMap] = useState([]);
 

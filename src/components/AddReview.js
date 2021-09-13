@@ -1,9 +1,9 @@
 import React from 'react';
 import style from '../assets/styles/detail_restaurant.module.css';
 import ChangeRating from '../components/ChangeRating';
-import {useState} from "react";
+import {useState, useEffect} from "react";
 
-const AddReview =() => {
+const AddReview =({callbackReviw}) => {
 
     const [comment, setComment] = useState();
     const [rating, setRating] = useState();
@@ -14,9 +14,15 @@ const AddReview =() => {
         setRating(rating)
     }
 
-    const handleAddReview = () => {
-        console.log(comment, rating)
-    }
+    // const handleAddReview = () => {
+    //     callbackReviw(rating, comment)
+    // }
+
+  useEffect(() => {
+    
+    callbackReviw(rating, comment)
+  },[rating, comment]);
+
 
     return (
         <div>
@@ -28,12 +34,13 @@ const AddReview =() => {
                 placeholder='Write something ...'>    
             </textarea>
             <ChangeRating callbackRating={callbackRating}/>
-
+{/* 
             <button 
                 onClick={handleAddReview}
-                className={style.detail_restaurant_add_reviw_btn}>
-                    Add new review
-            </button>
+                className={style.detail_restaurant_add_reviw_btn}
+            >
+                Add new review
+            </button> */}
         </div>
     )
 }

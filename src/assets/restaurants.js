@@ -34,5 +34,21 @@ export const restaurants = [
                 "comment":"J'ai trouvé ça correct, sans plus"
             }
        ]
+    },
+    {
+        "restaurantName":"Neko Ramen",
+        "address":"4 Rue Lamarck, 75018 Paris",
+        "lat":48.87141,
+        "long":2.34290,
+        "ratings":[
+            {
+                "stars":5,
+                "comment":"Une minuscule pizzeria délicieuse cachée juste à côté du Sacré choeur !"
+            },
+            {
+                "stars":5,
+                "comment":"J'ai trouvé ça correct, sans plus"
+            }
+       ]
     }
 ]
