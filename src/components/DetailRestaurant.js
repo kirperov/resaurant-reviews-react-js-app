@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button';
 import StarRatings from 'react-star-ratings';
 import ReactStreetview from 'react-streetview';
+import AddReview from './AddReview';
 
 const DetailRestaurant = (selectedRestaurant) => {
   const [show, setShow] = useState(false);
@@ -32,6 +33,7 @@ const DetailRestaurant = (selectedRestaurant) => {
     <div className={style.detail_restaurant_address}>
       <span><strong>Address: </strong></span> <span>{selectedRestaurant.selectedRestaurant.address}</span></div>
     <div className={style.detail_restaurant_comments}>
+    <AddReview selectedRestaurant={selectedRestaurant}></AddReview>
       <div>
         <span><strong>Comments: </strong></span>
       </div>
