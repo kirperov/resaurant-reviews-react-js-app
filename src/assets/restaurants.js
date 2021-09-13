@@ -14,7 +14,7 @@ export const restaurants = [
                 "comment":"Tout simplement mon restaurant préféré !"
             },   
             {
-                "stars":3,
+                "stars":5,
                 "comment":"Cool !"
             }
        ]
