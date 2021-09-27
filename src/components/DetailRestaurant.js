@@ -7,7 +7,7 @@ import StarRatings from 'react-star-ratings';
 import ReactStreetview from 'react-streetview';
 import AddReview from './AddReview';
 
-const DetailRestaurant = (selectedRestaurant) => {
+const DetailRestaurant = (props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -15,7 +15,8 @@ const DetailRestaurant = (selectedRestaurant) => {
   const [newComment, setNewComment] = useState();
 
   const updateRestaurant = () => {
-    selectedRestaurant.selectedRestaurant.ratings.push({stars: newRating, comment: newComment})
+    props.selectedRestaurant.ratings.push({stars: newRating, comment: newComment})
+    props.callbackReviw(props.selectedRestaurant, props.index);
   };
 
   const getCallbackReview = (rating, comment) => {
@@ -25,13 +26,13 @@ const DetailRestaurant = (selectedRestaurant) => {
 
   // see https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPanoramaOptions
   const streetViewPanoramaOptions = {
-    position: {lat: selectedRestaurant.selectedRestaurant.lat, lng: selectedRestaurant.selectedRestaurant.long},
+    position: {lat: props.selectedRestaurant.lat, lng: props.selectedRestaurant.long},
     pov: {heading: 100, pitch: 0},
     zoom: 1
   };
 
   const listItems = 
-  <div className={style.detail_restaurant_container} key={selectedRestaurant.selectedRestaurant.restaurantName}>
+  <div className={style.detail_restaurant_container} key={props.selectedRestaurant.restaurantName}>
       <div style={{
         width: '100%',
         height: '450px',
@@ -43,10 +44,10 @@ const DetailRestaurant = (selectedRestaurant) => {
       />
     </div>
     <div className={style.detail_restaurant_address}>
-      <span><strong>Address: </strong></span> <span>{selectedRestaurant.selectedRestaurant.address}</span></div>
+      <span><strong>Address: </strong></span> <span>{props.selectedRestaurant.address}</span></div>
     <div className={style.detail_restaurant_comments}>
     <AddReview callbackReviw={getCallbackReview}/>
-          <Button variant="primary" onClick={updateRestaurant}>
+        <Button variant="primary" onClick={updateRestaurant}>
           Add new review
       </Button>
 
@@ -54,7 +55,7 @@ const DetailRestaurant = (selectedRestaurant) => {
         <span><strong>Comments: </strong></span>
       </div>
       {
-        selectedRestaurant.selectedRestaurant.ratings.map(rating => 
+        props.selectedRestaurant.ratings.map(rating => 
         {
           return <div className={style.detail_restaurant_comment}>
                   <StarRatings
@@ -78,7 +79,7 @@ const DetailRestaurant = (selectedRestaurant) => {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{selectedRestaurant.selectedRestaurant.restaurantName}</Modal.Title>
+          <Modal.Title>{props.selectedRestaurant.restaurantName}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           { listItems }

@@ -4,6 +4,10 @@ import ReviewRestaurant from '../components/ReviewRestaurant';
 import { useState } from "react";
 
 const ListRestaurants = (props) => {
+    const getCallbackReview = (selectedRestaurant, index) => {
+        props.listRestaurants[index] = selectedRestaurant
+        props.callbackReview(props.listRestaurants)
+    };
     const listItems = props.listRestaurants.map((restaurant, index) =>
     <div key={restaurant.restaurantName}>
         <div className={style.list_restaurants_item}>
@@ -13,7 +17,7 @@ const ListRestaurants = (props) => {
                 <ReviewRestaurant restaurantRating={restaurant.ratings}></ReviewRestaurant>
             </div>
             <div className={style.restaurant_rating}>
-                <DetailRestaurant selectedRestaurant={restaurant} />
+                <DetailRestaurant selectedRestaurant={restaurant} callbackReviw={getCallbackReview} index={index}/>
             </div>
         </div>
     </div>

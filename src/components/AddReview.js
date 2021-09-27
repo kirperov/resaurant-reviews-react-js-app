@@ -8,21 +8,13 @@ const AddReview =({callbackReviw}) => {
     const [comment, setComment] = useState();
     const [rating, setRating] = useState();
 
- 
-    
     const callbackRating = (rating) => {
         setRating(rating)
     }
 
-    // const handleAddReview = () => {
-    //     callbackReviw(rating, comment)
-    // }
-
   useEffect(() => {
-    
     callbackReviw(rating, comment)
   },[rating, comment]);
-
 
     return (
         <div>
@@ -34,13 +26,6 @@ const AddReview =({callbackReviw}) => {
                 placeholder='Write something ...'>    
             </textarea>
             <ChangeRating callbackRating={callbackRating}/>
-{/* 
-            <button 
-                onClick={handleAddReview}
-                className={style.detail_restaurant_add_reviw_btn}
-            >
-                Add new review
-            </button> */}
         </div>
     )
 }

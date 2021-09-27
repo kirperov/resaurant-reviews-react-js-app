@@ -5,6 +5,7 @@ import style from '../assets/styles/map_section.module.css';
 import {ErrorBoundary} from 'react-error-boundary'
 import Filter from '../components/Filter';
 import { restaurants } from "../assets/restaurants";
+import AddRestaurant from './AddRestaurant';
 
 function ErrorFallback({error}) {
   return (
@@ -24,10 +25,7 @@ const MapSection = () => {
   }
 
   const callbackMaxFilter = (min, max) => {
-
-    // setFilterMax(max);
     getAverageRatingRestaurants(restaurants,min, max);
-
   }
 
   const getAverageRatingRestaurants = (listOfRestaurants,min, max) => {
@@ -49,6 +47,10 @@ const MapSection = () => {
     setRestaurantsList(listRestorants);
   }
 
+  const getCallbackReview = (selectedRestaurant) => {
+    setFilteredRestorantsMap(selectedRestaurant);
+    setRestaurantsList(selectedRestaurant);
+  };
 
   return (
     <div>
@@ -56,8 +58,9 @@ const MapSection = () => {
           <ErrorBoundary FallbackComponent={ErrorFallback}>
           <Map newListRestaurants={restaurantsList} mapCallback={mapCallbackData} />
             <div className={style.list_restaurants}>
+              <AddRestaurant/>
               <Filter callbackFilter={callbackMaxFilter}/>
-              <ListRestaurants listRestaurants={filteredRestorantsMap} />
+              <ListRestaurants listRestaurants={filteredRestorantsMap} callbackReview={getCallbackReview}/>
             </div>
           </ErrorBoundary>
         </div>
