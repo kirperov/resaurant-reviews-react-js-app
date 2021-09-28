@@ -49,7 +49,7 @@ const DetailRestaurant = (props) => {
     <AddReview callbackReviw={getCallbackReview}/>
         <Button variant="primary" onClick={updateRestaurant}>
           Add new review
-      </Button>
+        </Button>
 
       <div>
         <span><strong>Comments: </strong></span>
@@ -58,13 +58,13 @@ const DetailRestaurant = (props) => {
         props.selectedRestaurant.ratings.map(rating => 
         {
           return <div className={style.detail_restaurant_comment}>
-                  <StarRatings
-                    rating={rating.stars}
-                    starRatedColor="blue"
-                    numberOfStars={5}
-                    starDimension="1em"
-                    name='rating'
-                  />{ rating.comment }
+                    <StarRatings
+                      rating={rating.stars}
+                      starRatedColor="blue"
+                      numberOfStars={5}
+                      starDimension="1em"
+                      name='rating'
+                    />{ rating.comment }
                 </div>
         })
       }

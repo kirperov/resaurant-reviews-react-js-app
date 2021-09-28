@@ -28,7 +28,12 @@ const MapSection = () => {
     getAverageRatingRestaurants(restaurants,min, max);
   }
 
-  const getAverageRatingRestaurants = (listOfRestaurants,min, max) => {
+  const callbackAddRestaurant = (newRestaurant) => {
+    setRestaurantsList(restaurantsList => [...restaurantsList,newRestaurant] );
+    setFilteredRestorantsMap(filteredRestorantsMap => [...filteredRestorantsMap,newRestaurant] );
+  }
+
+  const getAverageRatingRestaurants = (listOfRestaurants,min, max) => { 
   const average = (array) => array.reduce((a, b) => a + b) / array.length;
   
     let listRestorants = [];
@@ -58,7 +63,7 @@ const MapSection = () => {
           <ErrorBoundary FallbackComponent={ErrorFallback}>
           <Map newListRestaurants={restaurantsList} mapCallback={mapCallbackData} />
             <div className={style.list_restaurants}>
-              <AddRestaurant/>
+              <AddRestaurant callbackAddRestaurant={callbackAddRestaurant}/>
               <Filter callbackFilter={callbackMaxFilter}/>
               <ListRestaurants listRestaurants={filteredRestorantsMap} callbackReview={getCallbackReview}/>
             </div>
