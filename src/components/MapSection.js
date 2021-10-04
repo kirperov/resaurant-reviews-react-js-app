@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Map from '../components/GoogleMap';
 import ListRestaurants from '../components/ListRestaurants';
 import style from '../assets/styles/map_section.module.css';

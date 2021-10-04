@@ -2,7 +2,7 @@ import React from 'react'
 import { useRef, useState} from "react";
 import style from '../assets/styles/map.module.css';
 import { restaurants } from '../assets/restaurants';
-import { GoogleMap, LoadScript, MarkerClusterer, Marker,Autocomplete, InfoBox } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, MarkerClusterer, Marker, Autocomplete, InfoBox } from '@react-google-maps/api';
 
 const containerStyle = {
   height: '100%'
@@ -11,12 +11,12 @@ const containerStyle = {
 let autocomplete = null;
 
 const Map = (props) => {
-
-    const [center, setCenter] = useState({
-    lat: 43.306112999999996,
-    lng: 5.3987991
+  const [center, setCenter] = useState({
+    lat: 48.864716,
+    lng: 2.349014
   });
 
+  const [restaurantsDataApi, setRestaurantsDataApi] = useState({data: []});
   const refMap = useRef(null);
   window.onload = (event) => {
     if (navigator.geolocation) {
@@ -74,6 +74,36 @@ const options = {
 function createKey(location) {
   return location.lat + location.lng;
 }
+ 
+const getNextPage = (pagination) => {
+  console.log(pagination)
+}
+
+const onMapLoad = map => {
+  let service = new window.google.maps.places.PlacesService(map);
+  
+  new Promise((resolve, reject) => {
+    service.nearbySearch(
+      {
+        location: center,
+        radius: 5000,
+        type: "restaurant"
+      },
+      (results, status, pagination) => {
+        if (status !== "OK" || !results) return;
+        setRestaurantsDataApi({
+          data: results.map(restaurant => {
+            return { lat: restaurant.geometry.location.lat(), lng: restaurant.geometry.location.lng() };
+          })
+        });
+        if (pagination && pagination.hasNextPage) {
+          // Note: nextPage will call the same handler function as the initial call
+          console.log(pagination.nextPage())
+        };
+      }
+    );
+  });
+}
 
   return (
     <LoadScript 
@@ -91,7 +121,8 @@ function createKey(location) {
           mapContainerStyle={containerStyle}
           center={center}
           zoom={10}
-        >
+          onLoad={map => onMapLoad(map)}
+         >
           <InfoBox
             options={options}
             position={center}
@@ -104,7 +135,7 @@ function createKey(location) {
           </InfoBox>
           <MarkerClusterer options={options}>
             {(clusterer) =>
-              restaurantsData.map((restaurantLocation) => (
+              restaurantsDataApi.data.map((restaurantLocation) => (
                 <Marker key={createKey(restaurantLocation)} position={restaurantLocation} clusterer={clusterer} />
               ))
             }
@@ -125,6 +156,7 @@ function createKey(location) {
           { /* Child components, such as markers, info windows, etc. */ }
           <></>
         </GoogleMap>
+        <button onClick={getNextPage}>test</button>
       </div>
     </LoadScript>
   )

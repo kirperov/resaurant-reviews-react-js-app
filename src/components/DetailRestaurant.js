@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import style from '../assets/styles/detail_restaurant.module.css';
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button';

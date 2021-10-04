@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal'
 import {Autocomplete} from '@react-google-maps/api';
-import style from '../assets/styles/detail_restaurant.module.css';
 let autocomplete = null;
 const AddRestaurant =({callbackAddRestaurant}) => {
     const [show, setShow] = useState(false);
@@ -42,13 +41,14 @@ const AddRestaurant =({callbackAddRestaurant}) => {
                         comment:""
                     }
                 ]
-            });
-      
+            }
+        );
     }
-    
+
     useEffect(() => {
         callbackAddRestaurant(newRestaurant);
     },[newRestaurant])
+
     return (
         <>
             <Button variant="primary" onClick={handleShow}>
