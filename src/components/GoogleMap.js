@@ -2,23 +2,22 @@ import React from 'react'
 import { useRef, useState} from "react";
 import style from '../assets/styles/map.module.css';
 import { restaurants } from '../assets/restaurants';
-import { GoogleMap, LoadScript, MarkerClusterer, Marker, Autocomplete, InfoBox } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, MarkerClusterer, Marker, Autocomplete, InfoBox} from '@react-google-maps/api';
 
 const containerStyle = {
   height: '100%'
 };
 
 let autocomplete = null;
-
+let getNextPage;
 const Map = (props) => {
-  const [center, setCenter] = useState({
-    lat: 48.864716,
-    lng: 2.349014
-  });
+  const [center, setCenter] = useState({});
+  const [currentCener, setCurrentCener] = useState({ lat:0, lng:0});
 
   const [restaurantsDataApi, setRestaurantsDataApi] = useState({data: []});
   const refMap = useRef(null);
   window.onload = (event) => {
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -30,6 +29,7 @@ const Map = (props) => {
       );
     } else {
       setCenter({ lat: center.lat, lng: center.lng});
+     
     }
   };
 
@@ -48,10 +48,19 @@ const onPlaceChanged = () => {
 
 const checkBounds = () => {
   let bounds = refMap.current.state.map.getBounds();
-  let sortedListRestaurants = props.newListRestaurants.filter(restaurant => 
-    bounds.contains({ lat: restaurant.lat, lng: restaurant.long})
-  )
-  props.mapCallback(sortedListRestaurants);
+   let lat = 0;
+   let lon = 0;
+  if(refMap.current.state.map.getCenter() !== undefined) {
+     lat =  refMap.current.state.map.getCenter().lat();
+     lon =  refMap.current.state.map.getCenter().lng();
+  }
+  setCurrentCener({ lat: lat, lng: lon});
+  if(bounds) {
+    let sortedListRestaurants = props.newListRestaurants.filter(restaurant => 
+      bounds.contains({ lat: restaurant.lat, lng: restaurant.long})
+    )
+    props.mapCallback(sortedListRestaurants);
+  }
 }
 
 const showMsgAddressError = () => {
@@ -62,9 +71,12 @@ const hideMsgAddressError = () => {
     document.getElementById('search-msg-error').style.display = "none";
 }
 
-const restaurantsData = props.newListRestaurants.map(restaurant => {
-  return { lat: restaurant.lat, lng: restaurant.long };
-})
+// console.log(props.newListRestaurants)
+// const restaurantsData = props.newListRestaurants.map(restaurant => {
+//   return { lat: restaurant.lat, lng: restaurant.long };
+// })
+
+// console.log(restaurantsData)
 
 const options = {
   imagePath:
@@ -74,18 +86,12 @@ const options = {
 function createKey(location) {
   return location.lat + location.lng;
 }
- 
-const getNextPage = (pagination) => {
-  console.log(pagination)
-}
 
-const onMapLoad = map => {
-  let service = new window.google.maps.places.PlacesService(map);
-  
+const getRestaurantsApi = (service) => {
   new Promise((resolve, reject) => {
     service.nearbySearch(
       {
-        location: center,
+        location: currentCener,
         radius: 5000,
         type: "restaurant"
       },
@@ -96,13 +102,22 @@ const onMapLoad = map => {
             return { lat: restaurant.geometry.location.lat(), lng: restaurant.geometry.location.lng() };
           })
         });
+        props.mapApiCallback(results)
+
         if (pagination && pagination.hasNextPage) {
           // Note: nextPage will call the same handler function as the initial call
-          console.log(pagination.nextPage())
+          getNextPage = () => {
+            pagination.nextPage();
+          }
         };
       }
     );
   });
+}
+
+const onMapLoad = () => {
+  let service = new window.google.maps.places.PlacesService(refMap.current.state.map);
+  getRestaurantsApi(service);
 }
 
   return (
@@ -110,7 +125,7 @@ const onMapLoad = map => {
       id="script-loader"
       googleMapsApiKey={process.env.REACT_APP_API_KEY}
       libraries={["places"]}
-    >
+     >
       <div className={style.map} >
         <div id="search-msg-error" className={ style.searchMsgError }> Veillez choisir l'adresse dans la liste </div>
         <GoogleMap
@@ -121,7 +136,7 @@ const onMapLoad = map => {
           mapContainerStyle={containerStyle}
           center={center}
           zoom={10}
-          onLoad={map => onMapLoad(map)}
+          onCenterChanged={onMapLoad}
          >
           <InfoBox
             options={options}
@@ -156,7 +171,7 @@ const onMapLoad = map => {
           { /* Child components, such as markers, info windows, etc. */ }
           <></>
         </GoogleMap>
-        <button onClick={getNextPage}>test</button>
+        <button onClick={getNextPage}> next </button>
       </div>
     </LoadScript>
   )
