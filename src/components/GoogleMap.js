@@ -12,12 +12,11 @@ let autocomplete = null;
 let getNextPage;
 const Map = (props) => {
   const [center, setCenter] = useState({});
+  const [service, setService] = useState();
   const [currentCener, setCurrentCener] = useState({ lat:0, lng:0});
-
-  const [restaurantsDataApi, setRestaurantsDataApi] = useState({data: []});
   const [restaurantsDataApiResults, setRestaurantsDataApiResults] = useState({data: []});
-
   const refMap = useRef(null);
+  
   window.onload = (event) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -100,7 +99,7 @@ const getRestaurantsApi = (service) => {
         if (pagination && pagination.hasNextPage) {
           // Note: nextPage will call the same handler function as the initial call
           getNextPage = () => {
-            // props.mapApiCallback(restaurantsDataApiResults);
+            props.mapApiCallback(restaurantsDataApiResults);
             pagination.nextPage();
           }
         };
@@ -109,8 +108,11 @@ const getRestaurantsApi = (service) => {
   });
 }
 
+const initService = () => {
+  setService(new window.google.maps.places.PlacesService(refMap.current.state.map))
+}
+
 const onMapLoad = () => {
-  let service = new window.google.maps.places.PlacesService(refMap.current.state.map);
   getRestaurantsApi(service);
 }
 
@@ -130,7 +132,8 @@ const onMapLoad = () => {
           mapContainerStyle={containerStyle}
           center={center}
           zoom={10}
-          onDragEnd={onMapLoad}
+          onLoad={initService}
+          onCenterChanged={onMapLoad}
          >
           <InfoBox
             options={options}

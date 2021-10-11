@@ -22,7 +22,6 @@ const MapSection = () => {
    
   let list = [];
   const mapCallbackData = (restaurantData) => {
-    // setRestaurantsList(restaurantData)
     setFilteredRestorantsMap(restaurantData);
   }
   
@@ -46,7 +45,6 @@ const MapSection = () => {
       });
     }
     setRestaurantsList(list)
-    setFilteredRestorantsMap(list);
   }
   
   const callbackMaxFilter = (min, max) => {
