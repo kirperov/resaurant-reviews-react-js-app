@@ -20,15 +20,15 @@ const MapSection = () => {
   const [restaurantsList, setRestaurantsList] = useState([]);
   const [filteredRestorantsMap, setFilteredRestorantsMap] = useState([]);
    
-  let list = [];
+  let sortedRestaurantsData = [];
   const mapCallbackData = (restaurantData) => {
     setFilteredRestorantsMap(restaurantData);
   }
   
-  const mapCallbackApiData = (restaurantApiData) => {
-    list = [];
+  const mapCallbackApiData = (restaurantApiData, next=null) => {
+    sortedRestaurantsData = [];
     for(let i = 0 ; i < restaurantApiData.data.length ; i++) {
-      list.push({
+      sortedRestaurantsData.push({
         place_id: restaurantApiData.data[i].place_id,
           restaurantName: restaurantApiData.data[i].name,
           address: restaurantApiData.data[i].vicinity,
@@ -44,7 +44,10 @@ const MapSection = () => {
           ]
       });
     }
-    setRestaurantsList(list)
+    setRestaurantsList(sortedRestaurantsData)
+    if(next===true) {
+      setFilteredRestorantsMap(sortedRestaurantsData);
+    }
   }
   
   const callbackMaxFilter = (min, max) => {

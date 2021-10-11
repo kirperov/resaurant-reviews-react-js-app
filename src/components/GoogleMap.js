@@ -64,6 +64,7 @@ const checkBounds = () => {
     )
     props.mapCallback(sortedListRestaurants);
   }
+  onMapLoad();
 }
 
 const showMsgAddressError = () => {
@@ -99,7 +100,7 @@ const getRestaurantsApi = (service) => {
         if (pagination && pagination.hasNextPage) {
           // Note: nextPage will call the same handler function as the initial call
           getNextPage = () => {
-            props.mapApiCallback(restaurantsDataApiResults);
+            props.mapApiCallback(restaurantsDataApiResults, true);
             pagination.nextPage();
           }
         };
@@ -133,7 +134,7 @@ const onMapLoad = () => {
           center={center}
           zoom={10}
           onLoad={initService}
-          onCenterChanged={onMapLoad}
+          // onCenterChanged={onMapLoad}
          >
           <InfoBox
             options={options}
