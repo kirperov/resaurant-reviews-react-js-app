@@ -4,7 +4,7 @@ import ListRestaurants from '../components/ListRestaurants';
 import style from '../assets/styles/map_section.module.css';
 import {ErrorBoundary} from 'react-error-boundary'
 import Filter from '../components/Filter';
-import { restaurants } from "../assets/restaurants";
+// import { restaurants } from "../assets/restaurants";
 import AddRestaurant from './AddRestaurant';
 
 function ErrorFallback({error}) {
@@ -17,25 +17,26 @@ function ErrorFallback({error}) {
 }
 
 const MapSection = () => {
-  const [restaurantsList, setRestaurantsList] = useState(restaurants);
+  const [restaurantsList, setRestaurantsList] = useState([]);
   const [filteredRestorantsMap, setFilteredRestorantsMap] = useState([]);
+   
   let list = [];
-
   const mapCallbackData = (restaurantData) => {
-    setRestaurantsList(restaurantData)
+    // setRestaurantsList(restaurantData)
     setFilteredRestorantsMap(restaurantData);
   }
   
   const mapCallbackApiData = (restaurantApiData) => {
-    for(let i = 0 ; i < restaurantApiData.length ; i++) {
+    list = [];
+    for(let i = 0 ; i < restaurantApiData.data.length ; i++) {
       list.push({
-        place_id: restaurantApiData[i].place_id,
-          restaurantName: restaurantApiData[i].name,
-          address: restaurantApiData[i].vicinity,
-          lat: restaurantApiData[i].geometry.location.lat(),
-          long: restaurantApiData[i].geometry.location.lng(),
-          rating: restaurantApiData[i].rating,
-          user_ratings_total: restaurantApiData[i].user_ratings_total,
+        place_id: restaurantApiData.data[i].place_id,
+          restaurantName: restaurantApiData.data[i].name,
+          address: restaurantApiData.data[i].vicinity,
+          lat: restaurantApiData.data[i].geometry.location.lat(),
+          long: restaurantApiData.data[i].geometry.location.lng(),
+          rating: restaurantApiData.data[i].rating,
+          user_ratings_total: restaurantApiData.data[i].user_ratings_total,
           ratings:[
               {
                   stars:0,
@@ -45,10 +46,11 @@ const MapSection = () => {
       });
     }
     setRestaurantsList(list)
+    setFilteredRestorantsMap(list);
   }
   
   const callbackMaxFilter = (min, max) => {
-    getAverageRatingRestaurants(restaurants,min, max);
+    getAverageRatingRestaurants(restaurantsList,min, max);
   }
 
   const callbackAddRestaurant = (newRestaurant) => {

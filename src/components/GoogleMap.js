@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRef, useState} from "react";
 import style from '../assets/styles/map.module.css';
-import { restaurants } from '../assets/restaurants';
+// import { restaurants } from '../assets/restaurants';
 import { GoogleMap, LoadScript, MarkerClusterer, Marker, Autocomplete, InfoBox} from '@react-google-maps/api';
 
 const containerStyle = {
@@ -15,9 +15,10 @@ const Map = (props) => {
   const [currentCener, setCurrentCener] = useState({ lat:0, lng:0});
 
   const [restaurantsDataApi, setRestaurantsDataApi] = useState({data: []});
+  const [restaurantsDataApiResults, setRestaurantsDataApiResults] = useState({data: []});
+
   const refMap = useRef(null);
   window.onload = (event) => {
-
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -25,11 +26,14 @@ const Map = (props) => {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           });
+          setCurrentCener({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
         }
       );
     } else {
       setCenter({ lat: center.lat, lng: center.lng});
-     
     }
   };
 
@@ -51,8 +55,8 @@ const checkBounds = () => {
    let lat = 0;
    let lon = 0;
   if(refMap.current.state.map.getCenter() !== undefined) {
-     lat =  refMap.current.state.map.getCenter().lat();
-     lon =  refMap.current.state.map.getCenter().lng();
+     lat = refMap.current.state.map.getCenter().lat();
+     lon = refMap.current.state.map.getCenter().lng();
   }
   setCurrentCener({ lat: lat, lng: lon});
   if(bounds) {
@@ -70,13 +74,6 @@ const showMsgAddressError = () => {
 const hideMsgAddressError = () => {
     document.getElementById('search-msg-error').style.display = "none";
 }
-
-// console.log(props.newListRestaurants)
-// const restaurantsData = props.newListRestaurants.map(restaurant => {
-//   return { lat: restaurant.lat, lng: restaurant.long };
-// })
-
-// console.log(restaurantsData)
 
 const options = {
   imagePath:
@@ -97,16 +94,13 @@ const getRestaurantsApi = (service) => {
       },
       (results, status, pagination) => {
         if (status !== "OK" || !results) return;
-        setRestaurantsDataApi({
-          data: results.map(restaurant => {
-            return { lat: restaurant.geometry.location.lat(), lng: restaurant.geometry.location.lng() };
-          })
-        });
-        props.mapApiCallback(results)
+        setRestaurantsDataApiResults({data: results});
+        props.mapApiCallback(restaurantsDataApiResults)
 
         if (pagination && pagination.hasNextPage) {
           // Note: nextPage will call the same handler function as the initial call
           getNextPage = () => {
+            // props.mapApiCallback(restaurantsDataApiResults);
             pagination.nextPage();
           }
         };
@@ -121,7 +115,7 @@ const onMapLoad = () => {
 }
 
   return (
-    <LoadScript 
+    <LoadScript
       id="script-loader"
       googleMapsApiKey={process.env.REACT_APP_API_KEY}
       libraries={["places"]}
@@ -136,7 +130,7 @@ const onMapLoad = () => {
           mapContainerStyle={containerStyle}
           center={center}
           zoom={10}
-          onCenterChanged={onMapLoad}
+          onDragEnd={onMapLoad}
          >
           <InfoBox
             options={options}
@@ -150,8 +144,8 @@ const onMapLoad = () => {
           </InfoBox>
           <MarkerClusterer options={options}>
             {(clusterer) =>
-              restaurantsDataApi.data.map((restaurantLocation) => (
-                <Marker key={createKey(restaurantLocation)} position={restaurantLocation} clusterer={clusterer} />
+              restaurantsDataApiResults.data.map((restaurantLocation) => (
+                <Marker key={createKey(restaurantLocation)} position={restaurantLocation.geometry.location} clusterer={clusterer} />
               ))
             }
           </MarkerClusterer>

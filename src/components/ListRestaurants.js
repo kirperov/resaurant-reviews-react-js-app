@@ -9,7 +9,7 @@ const ListRestaurants = (props) => {
     };
 
     const listItems = props.listRestaurants.map((restaurant, index) =>
-    <div key={restaurant.restaurantName}>
+    <div key={restaurant.restaurantName+restaurant.place_id}>
         <div className={style.list_restaurants_item}>
             <div className={style.restaurant_infos}>
                 <span>{restaurant.restaurantName}</span>
