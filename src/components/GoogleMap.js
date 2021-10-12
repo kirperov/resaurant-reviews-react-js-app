@@ -10,11 +10,11 @@ const containerStyle = {
   height: '100%'
 };
 
-// let autocomplete = null;
+const libraries = ['places'];
 let getNextPage;
 const Map = (props) => {
   const [autocomplete, setAutocomplete] = useState(null);
-  const [sortedRestaurants, setSortedRestaurants] = useState({});
+  const [sortedRestaurants, setSortedRestaurants] = useState([]);
   const [center, setCenter] = useState({});
   const [service, setService] = useState();
   const [currentCener, setCurrentCener] = useState({ lat:0, lng:0});
@@ -44,7 +44,6 @@ const Map = (props) => {
 
 const onLoad = (autocompleted) => {
   setAutocomplete(autocompleted)
-  // autocomplete = autocompleted;
 }
 
 const onPlaceChanged = () => {
@@ -70,8 +69,9 @@ const checkBounds = () => {
       bounds.contains({ lat: restaurant.lat, lng: restaurant.long})
     )
     setSortedRestaurants(sortedListRestaurants)
-    props.mapCallback(sortedListRestaurants);
+    props.mapCallback(sortedRestaurants);
   }
+
 }
 
 const showMsgAddressError = () => {
@@ -87,10 +87,6 @@ const options = {
     'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m', // so you must have m1.png, m2.png, m3.png, m4.png, m5.png and m6.png in that folder
 }
 
-function createKey(location) {
-  return location.lat + location.lng;
-}
-
 const getRestaurantsApi = (service) => {
   new Promise((resolve, reject) => {
     service.nearbySearch(
@@ -100,10 +96,7 @@ const getRestaurantsApi = (service) => {
         type: "restaurant"
       },
       (results, status, pagination) => {
-        console.log(results)
-    
         if(status !== "OK" || !results) {
-          console.log(status)
           return;
         }
         setRestaurantsDataApiResults({data: results});
@@ -132,7 +125,7 @@ const onMapLoad = () => {
     <LoadScript
       id="script-loader"
       googleMapsApiKey={process.env.REACT_APP_API_KEY}
-      libraries={["places"]}
+      libraries={libraries}
      >
       <div className={style.map} >
         <div id="search-msg-error" className={ style.searchMsgError }> Veillez choisir l'adresse dans la liste </div>
