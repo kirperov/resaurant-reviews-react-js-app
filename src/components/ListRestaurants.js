@@ -3,6 +3,7 @@ import DetailRestaurant from '../components/DetailRestaurant';
 import ReviewRestaurant from '../components/ReviewRestaurant';
 
 const ListRestaurants = (props) => {
+    console.log(props.listRestaurants)
     const getCallbackReview = (selectedRestaurant, index) => {
         props.listRestaurants[index] = selectedRestaurant
         props.callbackReview(props.listRestaurants)

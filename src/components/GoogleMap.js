@@ -2,22 +2,26 @@ import React from 'react'
 import { useRef, useState} from "react";
 import style from '../assets/styles/map.module.css';
 // import { restaurants } from '../assets/restaurants';
+import marker from '../assets/images/cutlery.png';
+import myPosition from '../assets/images/location.png';
 import { GoogleMap, LoadScript, MarkerClusterer, Marker, Autocomplete, InfoBox} from '@react-google-maps/api';
 
 const containerStyle = {
   height: '100%'
 };
 
-let autocomplete = null;
+// let autocomplete = null;
 let getNextPage;
 const Map = (props) => {
+  const [autocomplete, setAutocomplete] = useState(null);
+  const [sortedRestaurants, setSortedRestaurants] = useState({});
   const [center, setCenter] = useState({});
   const [service, setService] = useState();
   const [currentCener, setCurrentCener] = useState({ lat:0, lng:0});
   const [restaurantsDataApiResults, setRestaurantsDataApiResults] = useState({data: []});
   const refMap = useRef(null);
   
-  window.onload = (event) => {
+  window.onload = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -33,11 +37,14 @@ const Map = (props) => {
       );
     } else {
       setCenter({ lat: center.lat, lng: center.lng});
+      setCurrentCener({ lat: center.lat, lng: center.lng});
+
     }
   };
 
 const onLoad = (autocompleted) => {
-  autocomplete = autocompleted;
+  setAutocomplete(autocompleted)
+  // autocomplete = autocompleted;
 }
 
 const onPlaceChanged = () => {
@@ -62,9 +69,9 @@ const checkBounds = () => {
     let sortedListRestaurants = props.newListRestaurants.filter(restaurant => 
       bounds.contains({ lat: restaurant.lat, lng: restaurant.long})
     )
+    setSortedRestaurants(sortedListRestaurants)
     props.mapCallback(sortedListRestaurants);
   }
-  onMapLoad();
 }
 
 const showMsgAddressError = () => {
@@ -93,14 +100,18 @@ const getRestaurantsApi = (service) => {
         type: "restaurant"
       },
       (results, status, pagination) => {
-        if (status !== "OK" || !results) return;
+        console.log(results)
+    
+        if(status !== "OK" || !results) {
+          console.log(status)
+          return;
+        }
         setRestaurantsDataApiResults({data: results});
-        props.mapApiCallback(restaurantsDataApiResults)
+        props.mapApiCallback({data: results})
 
         if (pagination && pagination.hasNextPage) {
           // Note: nextPage will call the same handler function as the initial call
           getNextPage = () => {
-            props.mapApiCallback(restaurantsDataApiResults, true);
             pagination.nextPage();
           }
         };
@@ -134,22 +145,13 @@ const onMapLoad = () => {
           center={center}
           zoom={10}
           onLoad={initService}
-          // onCenterChanged={onMapLoad}
+          onCenterChanged={onMapLoad}
          >
-          <InfoBox
-            options={options}
-            position={center}
-          >
-            <div className={style.infoBox}>
-              <div style={{ fontSize: 16, fontColor: `#08233B` }}>
-                You are here.
-              </div>
-            </div>
-          </InfoBox>
-          <MarkerClusterer options={options}>
+          <Marker icon={myPosition}  position={center} />
+          <MarkerClusterer minimumClusterSize={20} zoomOnClick={false} options={options}>
             {(clusterer) =>
               restaurantsDataApiResults.data.map((restaurantLocation) => (
-                <Marker key={createKey(restaurantLocation)} position={restaurantLocation.geometry.location} clusterer={clusterer} />
+                <Marker icon={marker} key={restaurantLocation.place_id} position={restaurantLocation.geometry.location} clusterer={clusterer} />
               ))
             }
           </MarkerClusterer>
