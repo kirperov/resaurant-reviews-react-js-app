@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRef, useState} from "react";
+import { useRef, useState, useEffect} from "react";
 import style from '../assets/styles/map.module.css';
 // import { restaurants } from '../assets/restaurants';
 import marker from '../assets/images/cutlery.png';
@@ -40,6 +40,8 @@ const Map = (props) => {
       setCurrentCener({ lat: center.lat, lng: center.lng});
 
     }
+    // props.mapCallback(sortedRestaurants);
+    props.mapApiCallback(sortedRestaurants)
   };
 
 const onLoad = (autocompleted) => {
@@ -65,13 +67,11 @@ const checkBounds = () => {
   }
   setCurrentCener({ lat: lat, lng: lon});
   if(bounds) {
-    let sortedListRestaurants = props.newListRestaurants.filter(restaurant => 
-      bounds.contains({ lat: restaurant.lat, lng: restaurant.long})
+    let sortedListRestaurants = restaurantsDataApiResults.data.filter(restaurant => 
+      bounds.contains({ lat: restaurant.geometry.location.lat(), lng: restaurant.geometry.location.lng()})
     )
-    setSortedRestaurants(sortedListRestaurants)
-    props.mapCallback(sortedRestaurants);
+    props.mapApiCallback(sortedListRestaurants)
   }
-
 }
 
 const showMsgAddressError = () => {
@@ -100,8 +100,6 @@ const getRestaurantsApi = (service) => {
           return;
         }
         setRestaurantsDataApiResults({data: results});
-        props.mapApiCallback({data: results})
-
         if (pagination && pagination.hasNextPage) {
           // Note: nextPage will call the same handler function as the initial call
           getNextPage = () => {

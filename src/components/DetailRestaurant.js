@@ -19,10 +19,10 @@ const DetailRestaurant = (props) => {
     props.callbackReviw(props.selectedRestaurant, props.index);
   };
 
-  const getCallbackReview = (rating, comment) => {
-    setNewRating(rating);
-    setNewComment(comment);
-  };
+  // const getCallbackReview = (rating, comment) => {
+  //   setNewRating(rating);
+  //   setNewComment(comment);
+  // };
 
   // see https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPanoramaOptions
   const streetViewPanoramaOptions = {
@@ -46,7 +46,7 @@ const DetailRestaurant = (props) => {
     <div className={style.detail_restaurant_address}>
       <span><strong>Address: </strong></span> <span>{props.selectedRestaurant.address}</span></div>
     <div className={style.detail_restaurant_comments}>
-    <AddReview callbackReviw={getCallbackReview}/>
+    {/* <AddReview callbackReviw={getCallbackReview}/> */}
         <Button variant="primary" onClick={updateRestaurant}>
           Add new review
         </Button>
@@ -55,18 +55,18 @@ const DetailRestaurant = (props) => {
         <span><strong>Comments: </strong></span>
       </div>
       {
-        props.selectedRestaurant.ratings.map(rating => 
-        {
-          return <div className={style.detail_restaurant_comment}>
-                    <StarRatings
-                      rating={rating.stars}
-                      starRatedColor="blue"
-                      numberOfStars={5}
-                      starDimension="1em"
-                      name='rating'
-                    />{ rating.comment }
-                </div>
-        })
+        // props.selectedRestaurant.ratings.map(rating => 
+        // {
+        //   return <div className={style.detail_restaurant_comment}>
+        //             <StarRatings
+        //               rating={rating.stars}
+        //               starRatedColor="blue"
+        //               numberOfStars={5}
+        //               starDimension="1em"
+        //               name='rating'
+        //             />{ rating.comment }
+        //         </div>
+        // })
       }
     </div>
   </div>

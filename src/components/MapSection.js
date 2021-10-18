@@ -19,24 +19,18 @@ function ErrorFallback({error}) {
 const MapSection = () => {
   const [restaurantsList, setRestaurantsList] = useState([]);
   const [filteredRestorantsMap, setFilteredRestorantsMap] = useState([]);
-   
   let sortedRestaurantsData = [];
-  const mapCallbackData = (restaurantData) => {
-    setRestaurantsList(restaurantData);
-    setFilteredRestorantsMap(restaurantData);
-  }
-  
+
   const mapCallbackApiData = (restaurantApiData) => {
-    sortedRestaurantsData = []; 
-    for(let i = 0 ; i < restaurantApiData.data.length ; i++) {
+    for(let i = 0 ; i < restaurantApiData.length ; i++) {
       sortedRestaurantsData.push({
-        place_id: restaurantApiData.data[i].place_id,
-          restaurantName: restaurantApiData.data[i].name,
-          address: restaurantApiData.data[i].vicinity,
-          lat: restaurantApiData.data[i].geometry.location.lat(),
-          long: restaurantApiData.data[i].geometry.location.lng(),
-          rating: restaurantApiData.data[i].rating,
-          user_ratings_total: restaurantApiData.data[i].user_ratings_total,
+        place_id: restaurantApiData[i].place_id,
+          restaurantName: restaurantApiData[i].name,
+          address: restaurantApiData[i].vicinity,
+          lat: restaurantApiData[i].geometry.location.lat(),
+          long: restaurantApiData[i].geometry.location.lng(),
+          rating: restaurantApiData[i].rating,
+          user_ratings_total: restaurantApiData[i].user_ratings_total,
           ratings:[
               {
                   stars:0,
@@ -86,7 +80,7 @@ const MapSection = () => {
     <div>
         <div className={style.map_section}>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-          <Map newListRestaurants={restaurantsList} mapCallback={mapCallbackData} mapApiCallback={mapCallbackApiData} />
+          <Map newListRestaurants={restaurantsList} mapApiCallback={mapCallbackApiData} />
             <div className={style.list_restaurants}>
               <AddRestaurant callbackAddRestaurant={callbackAddRestaurant}/>
               <Filter callbackFilter={callbackMaxFilter}/>
