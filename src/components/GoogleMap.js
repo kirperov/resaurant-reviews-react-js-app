@@ -4,7 +4,7 @@ import style from '../assets/styles/map.module.css';
 // import { restaurants } from '../assets/restaurants';
 import marker from '../assets/images/cutlery.png';
 import myPosition from '../assets/images/location.png';
-import { GoogleMap, LoadScript, MarkerClusterer, Marker, Autocomplete, InfoBox} from '@react-google-maps/api';
+import { GoogleMap, LoadScript, MarkerClusterer, Marker, Autocomplete} from '@react-google-maps/api';
 
 const containerStyle = {
   height: '100%'
@@ -14,8 +14,7 @@ const libraries = ['places'];
 let getNextPage;
 const Map = (props) => {
   const [autocomplete, setAutocomplete] = useState(null);
-  const [sortedRestaurants, setSortedRestaurants] = useState([]);
-  const [center, setCenter] = useState({});
+  const [geolocation, setGeolocation] = useState({});
   const [service, setService] = useState();
   const [currentCener, setCurrentCener] = useState({ lat:0, lng:0});
   const [restaurantsDataApiResults, setRestaurantsDataApiResults] = useState({data: []});
@@ -25,23 +24,16 @@ const Map = (props) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setCenter({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-          setCurrentCener({
+          setGeolocation({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           });
         }
       );
     } else {
-      setCenter({ lat: center.lat, lng: center.lng});
-      setCurrentCener({ lat: center.lat, lng: center.lng});
-
+      // setGeolocation({ lat: geolocation.lat, lng: geolocation.lng});
+      // setCurrentCener({ lat: geolocation.lat, lng: geolocation.lng});
     }
-    // props.mapCallback(sortedRestaurants);
-    props.mapApiCallback(sortedRestaurants)
   };
 
 const onLoad = (autocompleted) => {
@@ -50,12 +42,17 @@ const onLoad = (autocompleted) => {
 
 const onPlaceChanged = () => {
   try {
-    setCenter({ lat: autocomplete.getPlace().geometry.location.lat(), lng: autocomplete.getPlace().geometry.location.lng()});
+    setGeolocation({ lat: autocomplete.getPlace().geometry.location.lat(), lng: autocomplete.getPlace().geometry.location.lng()});
     hideMsgAddressError();
   } catch (error) {
     showMsgAddressError();
   }
 }
+
+// useEffect(() => {
+//   console.log(restaurantsDataApiResults)
+//   props.mapApiCallback(restaurantsDataApiResults)
+// },[restaurantsDataApiResults]);
 
 const checkBounds = () => {
   let bounds = refMap.current.state.map.getBounds();
@@ -70,6 +67,8 @@ const checkBounds = () => {
     let sortedListRestaurants = restaurantsDataApiResults.data.filter(restaurant => 
       bounds.contains({ lat: restaurant.geometry.location.lat(), lng: restaurant.geometry.location.lng()})
     )
+
+    // setRestaurantsDataApiResults({data: sortedListRestaurants})
     props.mapApiCallback(sortedListRestaurants)
   }
 }
@@ -117,6 +116,7 @@ const initService = () => {
 
 const onMapLoad = () => {
   getRestaurantsApi(service);
+  props.callbackGetServiceMap(service)
 }
 
   return (
@@ -133,12 +133,12 @@ const onMapLoad = () => {
           options={options}
           id="InfoBox-example" 
           mapContainerStyle={containerStyle}
-          center={center}
+          center={geolocation}
           zoom={10}
           onLoad={initService}
           onCenterChanged={onMapLoad}
          >
-          <Marker icon={myPosition}  position={center} />
+          <Marker icon={myPosition} position={geolocation} />
           <MarkerClusterer minimumClusterSize={20} zoomOnClick={false} options={options}>
             {(clusterer) =>
               restaurantsDataApiResults.data.map((restaurantLocation) => (

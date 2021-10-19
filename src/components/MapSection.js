@@ -19,9 +19,12 @@ function ErrorFallback({error}) {
 const MapSection = () => {
   const [restaurantsList, setRestaurantsList] = useState([]);
   const [filteredRestorantsMap, setFilteredRestorantsMap] = useState([]);
+  const [service, setService] = useState();
+
   let sortedRestaurantsData = [];
 
   const mapCallbackApiData = (restaurantApiData) => {
+    console.log(restaurantApiData)
     for(let i = 0 ; i < restaurantApiData.length ; i++) {
       sortedRestaurantsData.push({
         place_id: restaurantApiData[i].place_id,
@@ -45,6 +48,10 @@ const MapSection = () => {
   
   const callbackMaxFilter = (min, max) => {
     getAverageRatingRestaurants(restaurantsList,min, max);
+  }
+
+  const callbackGetService = (service) => {
+    setService(service)
   }
 
   const callbackAddRestaurant = (newRestaurant) => {
@@ -80,11 +87,11 @@ const MapSection = () => {
     <div>
         <div className={style.map_section}>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-          <Map newListRestaurants={restaurantsList} mapApiCallback={mapCallbackApiData} />
+          <Map newListRestaurants={restaurantsList} mapApiCallback={mapCallbackApiData} callbackGetServiceMap={callbackGetService}/>
             <div className={style.list_restaurants}>
               <AddRestaurant callbackAddRestaurant={callbackAddRestaurant}/>
               <Filter callbackFilter={callbackMaxFilter}/>
-              <ListRestaurants listRestaurants={filteredRestorantsMap} callbackReview={getCallbackReview}/>
+              <ListRestaurants listRestaurants={filteredRestorantsMap} callbackReview={getCallbackReview} service={service}/>
             </div>
           </ErrorBoundary>
         </div>

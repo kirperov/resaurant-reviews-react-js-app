@@ -17,7 +17,8 @@ const ListRestaurants = (props) => {
                 <ReviewRestaurant restaurantRating={restaurant.ratings}></ReviewRestaurant>
             </div>
             <div className={style.restaurant_rating}>
-                <DetailRestaurant selectedRestaurant={restaurant} callbackReviw={getCallbackReview} index={index}/>
+                <p>{restaurant.place_id}</p>
+                <DetailRestaurant selectedRestaurant={restaurant} callbackReviw={getCallbackReview} index={index} service={props.service}/>
             </div>
         </div>
     </div>

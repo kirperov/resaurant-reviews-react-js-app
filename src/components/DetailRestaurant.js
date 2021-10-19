@@ -1,11 +1,12 @@
 import React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import style from '../assets/styles/detail_restaurant.module.css';
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button';
 import StarRatings from 'react-star-ratings';
 import ReactStreetview from 'react-streetview';
 import AddReview from './AddReview';
+import axios from 'axios';
 
 const DetailRestaurant = (props) => {
   const [show, setShow] = useState(false);
@@ -14,6 +15,18 @@ const DetailRestaurant = (props) => {
   const [newRating, setNewRating] = useState(0);
   const [newComment, setNewComment] = useState();
 
+  const handleService = () => {
+    props.service.getDetails({
+      placeId: props.selectedRestaurant.place_id
+    }, function (place, status) {
+      console.log('Place details:', place);
+    });
+  }
+
+  const handleOnClick = () => {
+    handleService();
+    handleShow();
+  }
   const updateRestaurant = () => {
     props.selectedRestaurant.ratings.push({stars: newRating, comment: newComment})
     props.callbackReviw(props.selectedRestaurant, props.index);
@@ -73,7 +86,7 @@ const DetailRestaurant = (props) => {
  
   return (
       <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="primary" onClick={handleOnClick}>
         Details
       </Button>
 
