@@ -49,10 +49,9 @@ const onPlaceChanged = () => {
   }
 }
 
-// useEffect(() => {
-//   console.log(restaurantsDataApiResults)
-//   props.mapApiCallback(restaurantsDataApiResults)
-// },[restaurantsDataApiResults]);
+useEffect(() => {
+  props.mapApiCallback(restaurantsDataApiResults.data)
+},[restaurantsDataApiResults]);
 
 const checkBounds = () => {
   let bounds = refMap.current.state.map.getBounds();
@@ -64,12 +63,11 @@ const checkBounds = () => {
   }
   setCurrentCener({ lat: lat, lng: lon});
   if(bounds) {
-    let sortedListRestaurants = restaurantsDataApiResults.data.filter(restaurant => 
+    let sortedListRestaurants = restaurantsDataApiResults.data.filter(restaurant =>
       bounds.contains({ lat: restaurant.geometry.location.lat(), lng: restaurant.geometry.location.lng()})
     )
 
-    // setRestaurantsDataApiResults({data: sortedListRestaurants})
-    props.mapApiCallback(sortedListRestaurants)
+    setRestaurantsDataApiResults({data: sortedListRestaurants})
   }
 }
 

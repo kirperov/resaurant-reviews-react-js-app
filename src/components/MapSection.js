@@ -21,10 +21,9 @@ const MapSection = () => {
   const [filteredRestorantsMap, setFilteredRestorantsMap] = useState([]);
   const [service, setService] = useState();
 
-  let sortedRestaurantsData = [];
 
   const mapCallbackApiData = (restaurantApiData) => {
-    console.log(restaurantApiData)
+    let sortedRestaurantsData = [];
     for(let i = 0 ; i < restaurantApiData.length ; i++) {
       sortedRestaurantsData.push({
         place_id: restaurantApiData[i].place_id,
@@ -42,6 +41,7 @@ const MapSection = () => {
           ]
       });
     }
+    console.log(sortedRestaurantsData)
     setRestaurantsList(sortedRestaurantsData)
     setFilteredRestorantsMap(sortedRestaurantsData);
   }

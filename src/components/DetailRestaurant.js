@@ -6,7 +6,6 @@ import Button from 'react-bootstrap/Button';
 import StarRatings from 'react-star-ratings';
 import ReactStreetview from 'react-streetview';
 import AddReview from './AddReview';
-import axios from 'axios';
 
 const DetailRestaurant = (props) => {
   const [show, setShow] = useState(false);
