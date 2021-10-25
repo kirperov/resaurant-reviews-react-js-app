@@ -3,7 +3,6 @@ import DetailRestaurant from '../components/DetailRestaurant';
 import ReviewRestaurant from '../components/ReviewRestaurant';
 
 const ListRestaurants = (props) => {
-    console.log(props.listRestaurants)
     const getCallbackReview = (selectedRestaurant, index) => {
         props.listRestaurants[index] = selectedRestaurant
         props.callbackReview(props.listRestaurants)
@@ -15,10 +14,10 @@ const ListRestaurants = (props) => {
             <div className={style.restaurant_infos}>
                 <span>{restaurant.restaurantName}</span>
                 <span>Address: {restaurant.address}</span>
-                <ReviewRestaurant restaurantRating={restaurant.ratings}></ReviewRestaurant>
+                <ReviewRestaurant restaurantRating={restaurant.rating}></ReviewRestaurant>
             </div>
             <div className={style.restaurant_rating}>
-                <p>{restaurant.place_id}</p>
+                <span>Ratings ({restaurant.user_ratings_total})</span>
                 <DetailRestaurant selectedRestaurant={restaurant} callbackReviw={getCallbackReview} index={index} service={props.service}/>
             </div>
         </div>

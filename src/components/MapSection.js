@@ -27,21 +27,14 @@ const MapSection = () => {
     for(let i = 0 ; i < restaurantApiData.length ; i++) {
       sortedRestaurantsData.push({
         place_id: restaurantApiData[i].place_id,
-          restaurantName: restaurantApiData[i].name,
-          address: restaurantApiData[i].vicinity,
-          lat: restaurantApiData[i].geometry.location.lat(),
-          long: restaurantApiData[i].geometry.location.lng(),
-          rating: restaurantApiData[i].rating,
-          user_ratings_total: restaurantApiData[i].user_ratings_total,
-          ratings:[
-              {
-                  stars:0,
-                  comment:""
-              }
-          ]
+        restaurantName: restaurantApiData[i].name,
+        address: restaurantApiData[i].vicinity,
+        lat: restaurantApiData[i].geometry.location.lat(),
+        long: restaurantApiData[i].geometry.location.lng(),
+        rating: restaurantApiData[i].rating,
+        user_ratings_total: restaurantApiData[i].user_ratings_total
       });
     }
-    console.log(sortedRestaurantsData)
     setRestaurantsList(sortedRestaurantsData)
     setFilteredRestorantsMap(sortedRestaurantsData);
   }

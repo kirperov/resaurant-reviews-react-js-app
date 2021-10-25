@@ -8,17 +8,20 @@ import ReactStreetview from 'react-streetview';
 import AddReview from './AddReview';
 
 const DetailRestaurant = (props) => {
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [newRating, setNewRating] = useState(0);
+  const [newUsername, setNewUsername] = useState();
   const [newComment, setNewComment] = useState();
-
+  const [newRating, setNewRating] = useState(0);
+  const [reviewsRestaurant, setReviewsRestaurant] = useState();
+  
   const handleService = () => {
     props.service.getDetails({
       placeId: props.selectedRestaurant.place_id
     }, function (place, status) {
-      console.log('Place details:', place);
+      setReviewsRestaurant(place)
     });
   }
 
@@ -26,15 +29,20 @@ const DetailRestaurant = (props) => {
     handleService();
     handleShow();
   }
+  
   const updateRestaurant = () => {
-    props.selectedRestaurant.ratings.push({stars: newRating, comment: newComment})
-    props.callbackReviw(props.selectedRestaurant, props.index);
+    reviewsRestaurant.reviews.push({
+      author_name: newUsername,
+      rating: newRating,
+      text: newComment
+    })
   };
 
-  // const getCallbackReview = (rating, comment) => {
-  //   setNewRating(rating);
-  //   setNewComment(comment);
-  // };
+  const getCallbackReview = (rating, comment, username) => {
+    setNewUsername(username);
+    setNewComment(comment);
+    setNewRating(rating);
+  };
 
   // see https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPanoramaOptions
   const streetViewPanoramaOptions = {
@@ -45,41 +53,51 @@ const DetailRestaurant = (props) => {
 
   const listItems = 
   <div className={style.detail_restaurant_container} key={props.selectedRestaurant.restaurantName}>
-      <div style={{
-        width: '100%',
-        height: '450px',
-        backgroundColor: '#eeeeee'
-      }}>
-      <ReactStreetview
-        apiKey={process.env.REACT_APP_API_KEY}
-        streetViewPanoramaOptions={streetViewPanoramaOptions}
-      />
-    </div>
-    <div className={style.detail_restaurant_address}>
-      <span><strong>Address: </strong></span> <span>{props.selectedRestaurant.address}</span></div>
-    <div className={style.detail_restaurant_comments}>
-    {/* <AddReview callbackReviw={getCallbackReview}/> */}
-        <Button variant="primary" onClick={updateRestaurant}>
-          Add new review
-        </Button>
-
-      <div>
-        <span><strong>Comments: </strong></span>
-      </div>
-      {
-        // props.selectedRestaurant.ratings.map(rating => 
-        // {
-        //   return <div className={style.detail_restaurant_comment}>
-        //             <StarRatings
-        //               rating={rating.stars}
-        //               starRatedColor="blue"
-        //               numberOfStars={5}
-        //               starDimension="1em"
-        //               name='rating'
-        //             />{ rating.comment }
-        //         </div>
-        // })
-      }
+    <div style={{
+      width: '100%',
+      height: '450px',
+      backgroundColor: '#eeeeee'
+    }}>
+    <ReactStreetview
+      apiKey={process.env.REACT_APP_API_KEY}
+      streetViewPanoramaOptions={streetViewPanoramaOptions}
+    />
+  </div>
+  <div className={style.detail_restaurant_address}>
+    <span><strong>Address: </strong></span>
+    <span>{props.selectedRestaurant.address}</span>
+  </div>
+  <div className={style.detail_restaurant_comments}>
+  <AddReview
+    callbackReviw={getCallbackReview}
+  />
+  <Button
+    variant="primary"
+    onClick={updateRestaurant}>
+    Add new review
+  </Button>
+  <div>
+    <span><strong>Comments: </strong></span>
+  </div>
+  {
+    reviewsRestaurant ? (
+      reviewsRestaurant.reviews.map(review => 
+        {
+          return <div className={style.detail_restaurant_comment}>
+              <span><strong>Author: </strong>{review.author_name}</span>
+              <span><strong>Date: </strong>{review.relative_time_description}</span>
+                    <StarRatings
+                      rating={review.rating}
+                      starRatedColor="blue"
+                      numberOfStars={5}
+                      starDimension="1em"
+                      name='rating'
+                    />
+                    { review.text }
+                </div>
+        })
+    ) : ("")
+  }
     </div>
   </div>
  
@@ -95,7 +113,6 @@ const DetailRestaurant = (props) => {
         </Modal.Header>
         <Modal.Body>
           { listItems }
-
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

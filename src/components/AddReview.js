@@ -4,7 +4,7 @@ import ChangeRating from '../components/ChangeRating';
 import {useState, useEffect} from "react";
 
 const AddReview =({callbackReviw}) => {
-
+    const [username, setUserName] = useState();
     const [comment, setComment] = useState();
     const [rating, setRating] = useState();
 
@@ -13,11 +13,18 @@ const AddReview =({callbackReviw}) => {
     }
 
   useEffect(() => {
-    callbackReviw(rating, comment)
-  },[rating, comment]);
+    callbackReviw(rating, comment, username)
+  },[rating, comment, username]);
 
     return (
         <div>
+            <label>Your name </label>
+             <input
+                    onChange={(event) => {
+                    setUserName(event.target.value);
+                }}
+                className={style.detail_restaurant_add_review}>
+             </input>
             <textarea 
                 onChange={(event) => {
                     setComment(event.target.value);
