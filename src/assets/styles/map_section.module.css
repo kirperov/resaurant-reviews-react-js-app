@@ -1,6 +1,6 @@
 .map_section {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .list_restaurants {
@@ -9,14 +9,14 @@
 
 /********** Medium devices only **********/
 @media (min-width: 768px) and (max-width: 991px) {
-    .list_restaurants {
-        width: 100%;
-    }
+  .list_restaurants {
+    width: 100%;
+  }
 }
 
 /********** Mobile devices only **********/
 @media only screen and (max-width: 767px) {
-    .list_restaurants {
-        width: 100%;
-    }
+  .list_restaurants {
+    width: 100%;
+  }
 }

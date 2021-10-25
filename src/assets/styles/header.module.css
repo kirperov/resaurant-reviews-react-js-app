@@ -1,14 +1,14 @@
 .header {
-    background-color: rgba(209, 229, 255, 0.308);
-    height: 5em;
+  background-color: rgba(209, 229, 255, 0.308);
+  height: 5em;
 }
 
 .logo {
-    margin: 5px;
-    position: relative;
-    float: left;
+  margin: 5px;
+  position: relative;
+  float: left;
 }
 
 .logo img {
-    width: 60px;
+  width: 60px;
 }
