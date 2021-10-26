@@ -20,6 +20,9 @@ const MapSection = () => {
   const [restaurantsList, setRestaurantsList] = useState([]);
   const [filteredRestorantsMap, setFilteredRestorantsMap] = useState([]);
   const [service, setService] = useState();
+  const [minFilterStar, setMinFilterStar] = useState();
+  const [maxFilterStar, setMaxFilterStar] = useState();
+
 
   const mapCallbackApiData = (restaurantApiData) => {
     let sortedRestaurantsData = [];
@@ -39,6 +42,8 @@ const MapSection = () => {
   };
 
   const callbackMaxFilter = (min, max) => {
+    setMinFilterStar(min);
+    setMaxFilterStar(max)
     getAverageRatingRestaurants(restaurantsList, min, max);
   };
 
@@ -59,14 +64,15 @@ const MapSection = () => {
 
   const getAverageRatingRestaurants = (listOfRestaurants, min, max) => {
     const average = (array) => array.reduce((a, b) => a + b) / array.length;
+    const restaurantListStars = [];
 
     let listRestorants = [];
     listOfRestaurants.map((restaurant) => {
-      const restaurantListStars = [];
 
-      for (let i = 0; i < restaurant.ratings.length; i++) {
-        restaurantListStars.push(restaurant.ratings[i].stars);
-      }
+      // for (let i = 0; i < restaurant.ratings.length; i++) {
+      //   restaurantListStars.push(restaurant.ratings[i].stars);
+      // }
+      restaurantListStars.push(restaurant.rating)
 
       if (
         average(restaurantListStars) >= min &&
@@ -92,6 +98,8 @@ const MapSection = () => {
             newListRestaurants={restaurantsList}
             mapApiCallback={mapCallbackApiData}
             callbackGetServiceMap={callbackGetService}
+            minFilterStar={minFilterStar}
+            maxFilterStar={maxFilterStar}
           />
           <div className={style.list_restaurants}>
             <AddRestaurant callbackAddRestaurant={callbackAddRestaurant} />

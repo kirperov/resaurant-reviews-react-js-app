@@ -14,12 +14,12 @@ const ListRestaurants = (props) => {
         <div className={style.restaurant_infos}>
           <span>{restaurant.restaurantName}</span>
           <span>Address: {restaurant.address}</span>
+          <span>Ratings ({restaurant.user_ratings_total})</span>
           <ReviewRestaurant
             restaurantRating={restaurant.rating}
           ></ReviewRestaurant>
         </div>
         <div className={style.restaurant_rating}>
-          <span>Ratings ({restaurant.user_ratings_total})</span>
           <DetailRestaurant
             selectedRestaurant={restaurant}
             callbackReviw={getCallbackReview}

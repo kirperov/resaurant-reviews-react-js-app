@@ -96,7 +96,7 @@ const Map = (props) => {
     imagePath:
       "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m", // so you must have m1.png, m2.png, m3.png, m4.png, m5.png and m6.png in that folder
   };
-
+  let filteredData=[];
   const getRestaurantsApi = (service) => {
     new Promise((resolve, reject) => {
       service.nearbySearch(
@@ -109,7 +109,15 @@ const Map = (props) => {
           if (status !== "OK" || !results) {
             return;
           }
-          setRestaurantsDataApiResults({ data: results });
+          (results).forEach(element => {
+            if(element.rating >= props.minFilterStar && element.rating <= props.maxFilterStar) {
+              filteredData.push(element)
+            }
+          });
+          setRestaurantsDataApiResults({ data: filteredData });
+
+          filteredData=[];
+
           if (pagination && pagination.hasNextPage) {
             // Note: nextPage will call the same handler function as the initial call
             getNextPage = () => {
