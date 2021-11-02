@@ -16,14 +16,16 @@ const DetailRestaurant = (props) => {
   const [newRating, setNewRating] = useState(0);
   const [reviewsRestaurant, setReviewsRestaurant] = useState();
   const handleService = () => {
-    props.service.getDetails(
-      {
-        placeId: props.selectedRestaurant.place_id,
-      },
-      function (place, status) {
-        setReviewsRestaurant(place);
-      }
-    );
+    if(props.selectedRestaurant.place_id) {
+      props.service.getDetails(
+        {
+          placeId: props.selectedRestaurant.place_id,
+        },
+        function (place, status) {
+          setReviewsRestaurant(place);
+        }
+      );
+    }
   };
 
   const handleOnClick = () => {
@@ -86,9 +88,9 @@ const DetailRestaurant = (props) => {
           </span>
         </div>
         {reviewsRestaurant
-          ? reviewsRestaurant.reviews.map((review) => {
+          ? reviewsRestaurant.reviews.map((review, index) => {
               return (
-                <div className={style.detail_restaurant_comment}>
+                <div key={index} className={style.detail_restaurant_comment}>
                   <span>
                     <strong>Author: </strong>
                     {review.author_name}

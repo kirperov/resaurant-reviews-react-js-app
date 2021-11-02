@@ -9,7 +9,7 @@ import {
   LoadScript,
   MarkerClusterer,
   Marker,
-  Autocomplete,
+  Autocomplete
 } from "@react-google-maps/api";
 
 const containerStyle = {
@@ -19,15 +19,17 @@ const containerStyle = {
 const libraries = ["places"];
 let getNextPage;
 const Map = (props) => {
+  let filteredData=[];
   const [autocomplete, setAutocomplete] = useState(null);
-  const [geolocation, setGeolocation] = useState({});
+  // Default geolocation Marseille, France
+  const [geolocation, setGeolocation] = useState({ lat: 43.2965, lng: 5.3698 });
+  const [currentCenter, setcurrentCenter] = useState({ lat: 0, lng: 0 });
   const [service, setService] = useState();
-  const [currentCener, setCurrentCener] = useState({ lat: 0, lng: 0 });
   const [restaurantsDataApiResults, setRestaurantsDataApiResults] = useState({
     data: [],
   });
   const refMap = useRef(null);
-
+ 
   window.onload = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -36,9 +38,6 @@ const Map = (props) => {
           lng: position.coords.longitude,
         });
       });
-    } else {
-      // setGeolocation({ lat: geolocation.lat, lng: geolocation.lng});
-      // setCurrentCener({ lat: geolocation.lat, lng: geolocation.lng});
     }
   };
 
@@ -52,6 +51,10 @@ const Map = (props) => {
         lat: autocomplete.getPlace().geometry.location.lat(),
         lng: autocomplete.getPlace().geometry.location.lng(),
       });
+      setcurrentCenter({
+        lat: autocomplete.getPlace().geometry.location.lat(),
+        lng: autocomplete.getPlace().geometry.location.lng(),
+      });
       hideMsgAddressError();
     } catch (error) {
       showMsgAddressError();
@@ -62,6 +65,10 @@ const Map = (props) => {
     props.mapApiCallback(restaurantsDataApiResults.data);
   }, [restaurantsDataApiResults]);
 
+  useEffect(() => {
+    apiResultService();
+  }, [props.minFilterStar, props.maxFilterStar]);
+
   const checkBounds = () => {
     let bounds = refMap.current.state.map.getBounds();
     let lat = 0;
@@ -70,7 +77,7 @@ const Map = (props) => {
       lat = refMap.current.state.map.getCenter().lat();
       lon = refMap.current.state.map.getCenter().lng();
     }
-    setCurrentCener({ lat: lat, lng: lon });
+    setcurrentCenter({ lat: lat, lng: lon });
     if (bounds) {
       let sortedListRestaurants = restaurantsDataApiResults.data.filter(
         (restaurant) =>
@@ -79,7 +86,6 @@ const Map = (props) => {
             lng: restaurant.geometry.location.lng(),
           })
       );
-
       setRestaurantsDataApiResults({ data: sortedListRestaurants });
     }
   };
@@ -93,40 +99,46 @@ const Map = (props) => {
   };
 
   const options = {
+    zoomControl: false,
+    mapTypeControl: false,
+    streetViewControl: false,
     imagePath:
       "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m", // so you must have m1.png, m2.png, m3.png, m4.png, m5.png and m6.png in that folder
   };
-  let filteredData=[];
-  const getRestaurantsApi = (service) => {
-    new Promise((resolve, reject) => {
-      service.nearbySearch(
-        {
-          location: currentCener,
-          radius: 5000,
-          type: "restaurant",
-        },
-        (results, status, pagination) => {
-          if (status !== "OK" || !results) {
-            return;
-          }
-          (results).forEach(element => {
-            if(element.rating >= props.minFilterStar && element.rating <= props.maxFilterStar) {
-              filteredData.push(element)
+
+
+  const getRestaurantsApi = () => {
+    if(service) {
+      new Promise((resolve, reject) => {
+        service.nearbySearch(
+          {
+            location: currentCenter,
+            radius: 1500,
+            type: "restaurant",
+          },
+          (results, status, pagination) => {
+            if (status !== "OK" || !results) {
+              return;
             }
-          });
-          setRestaurantsDataApiResults({ data: filteredData });
-
-          filteredData=[];
-
-          if (pagination && pagination.hasNextPage) {
-            // Note: nextPage will call the same handler function as the initial call
-            getNextPage = () => {
-              pagination.nextPage();
-            };
+            (results).forEach(element => {
+              if(element.rating >= props.minFilterStar && element.rating <= props.maxFilterStar) {
+                filteredData.push(element)
+              }
+            });
+            setRestaurantsDataApiResults({ data: filteredData });
+  
+            filteredData=[];
+  
+            if (pagination && pagination.hasNextPage) {
+              // Note: nextPage will call the same handler function as the initial call
+              getNextPage = () => {
+                pagination.nextPage();
+              };
+            }
           }
-        }
-      );
-    });
+        );
+      });
+    }
   };
 
   const initService = () => {
@@ -135,8 +147,8 @@ const Map = (props) => {
     );
   };
 
-  const onMapLoad = () => {
-    getRestaurantsApi(service);
+  const apiResultService = () => {
+    getRestaurantsApi();
     props.callbackGetServiceMap(service);
   };
 
@@ -155,12 +167,12 @@ const Map = (props) => {
           ref={refMap}
           onBoundsChanged={checkBounds}
           options={options}
-          id="InfoBox-example"
+          id="google-map"
           mapContainerStyle={containerStyle}
           center={geolocation}
-          zoom={10}
+          zoom={15}
           onLoad={initService}
-          onCenterChanged={onMapLoad}
+          onCenterChanged={apiResultService}
         >
           <Marker icon={myPosition} position={geolocation} />
           <MarkerClusterer
