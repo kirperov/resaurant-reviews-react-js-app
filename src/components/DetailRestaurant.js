@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import style from "../assets/styles/detail_restaurant.module.css";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -11,6 +11,7 @@ const DetailRestaurant = (props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+ 
   const [newUsername, setNewUsername] = useState();
   const [newComment, setNewComment] = useState();
   const [newRating, setNewRating] = useState(0);
@@ -82,8 +83,7 @@ const DetailRestaurant = (props) => {
         <div>
           <span>
             <strong>
-              Comments: (
-              {reviewsRestaurant ? reviewsRestaurant.reviews.length : ""}){" "}
+              Comments: ({reviewsRestaurant ? reviewsRestaurant.reviews.length : ""}{"0"})
             </strong>
           </span>
         </div>
@@ -117,11 +117,10 @@ const DetailRestaurant = (props) => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleOnClick}>
+      <Button className="me-2" onClick={() => handleShow(true)} variant="primary" onClick={handleOnClick}>
         Details
       </Button>
-
-      <Modal show={show} onHide={handleClose}>
+      <Modal fullscreen={true} show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{props.selectedRestaurant.restaurantName}</Modal.Title>
         </Modal.Header>

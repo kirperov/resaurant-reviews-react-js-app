@@ -46,7 +46,7 @@ const AddRestaurant = ({ callbackAddRestaurant }) => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="primary" onClick={handleShow} className={style.add_restaurant_btn_modal}>
         Add new restaurant
       </Button>
 

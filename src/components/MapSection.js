@@ -102,8 +102,10 @@ const MapSection = () => {
             maxFilterStar={maxFilterStar}
           />
           <div className={style.list_restaurants}>
-            <AddRestaurant callbackAddRestaurant={callbackAddRestaurant} />
-            <Filter callbackFilter={callbackMaxFilter} />
+            <div className={style.container_options}>
+              <Filter callbackFilter={callbackMaxFilter} />
+              <AddRestaurant callbackAddRestaurant={callbackAddRestaurant} />
+            </div>
             <ListRestaurants
               listRestaurants={filteredRestorantsMap}
               callbackReview={getCallbackReview}

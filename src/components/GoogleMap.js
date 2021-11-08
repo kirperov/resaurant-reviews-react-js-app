@@ -4,6 +4,10 @@ import style from "../assets/styles/map.module.css";
 // import { restaurants } from '../assets/restaurants';
 import marker from "../assets/images/cutlery.png";
 import myPosition from "../assets/images/location.png";
+import logo from "../assets/images/logo.png";
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faAngleRight} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   GoogleMap,
   LoadScript,
@@ -11,11 +15,11 @@ import {
   Marker,
   Autocomplete
 } from "@react-google-maps/api";
-
+ 
+library.add(faAngleRight)
 const containerStyle = {
   height: "100%",
 };
-
 const libraries = ["places"];
 let getNextPage;
 const Map = (props) => {
@@ -159,6 +163,15 @@ const Map = (props) => {
       libraries={libraries}
     >
       <div className={style.map}>
+        <div className={style.nextRestaurantsContainer}>
+          <div className={style.logo}>
+            <img src={logo} alt="good food" />
+          </div>
+          <div className={style.nextBntContainer}>
+            <span>Click to see next page</span>
+            <button onClick={getNextPage} className={style.nextRestaurantsBtn}> next <FontAwesomeIcon icon="angle-right"/> </button>
+          </div>
+        </div>
         <div id="search-msg-error" className={style.searchMsgError}>
           {" "}
           Veillez choisir l'adresse dans la liste{" "}
@@ -204,7 +217,7 @@ const Map = (props) => {
           {/* Child components, such as markers, info windows, etc. */}
           <></>
         </GoogleMap>
-        <button onClick={getNextPage}> next </button>
+        {/* <BtnNextRestaurant getNextPageCallback={getNextPage}></BtnNextRestaurant> */}
       </div>
     </LoadScript>
   );

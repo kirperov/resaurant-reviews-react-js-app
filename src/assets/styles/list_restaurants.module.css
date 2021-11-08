@@ -1,8 +1,10 @@
 .container_restaurants {
   display: flex;
-
-  background-color: #b789f0;
+  background-color: rgba(114, 104, 255, 0.137);
   flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+  padding-bottom: 20%;
 }
 
 .list_restaurants_items {
@@ -17,6 +19,7 @@
   padding: 0.5em;
   margin: 0.5em;
   background-color: rgb(255, 255, 255);
+  border-radius: 20px;
 }
 
 .restaurant_infos {

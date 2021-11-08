@@ -7,3 +7,16 @@
     border: rgb(143, 143, 143) 1px solid;
     border-radius: 0.5em;
 }
+
+.add_restaurant_btn_modal {
+    color: black !important;
+    border: none !important;
+    background-color: rgb(119, 0, 255) !important;
+}
+ 
+
+.add_restaurant_btn_modal:hover {
+    color: white !important;
+    border: none !important;
+    background-color: rgba(119, 0, 255, 0.26) !important;
+}

@@ -7,6 +7,15 @@
   width: 40%;
 }
 
+.container_options {
+  background-color: rgba(29, 31, 190, 0.253);
+  padding: 8.5px; 
+  position: relative;
+  z-index: 1000;
+  -webkit-box-shadow: 12px 8px 14px 5px rgba(0,0,0,0.58);
+  box-shadow: 12px 8px 14px 5px rgba(0,0,0,0.58);
+}
+
 /********** Medium devices only **********/
 @media (min-width: 768px) and (max-width: 991px) {
   .list_restaurants {
