@@ -23,7 +23,6 @@ const MapSection = () => {
   const [minFilterStar, setMinFilterStar] = useState();
   const [maxFilterStar, setMaxFilterStar] = useState();
 
-
   const mapCallbackApiData = (restaurantApiData) => {
     let sortedRestaurantsData = [];
     for (let i = 0; i < restaurantApiData.length; i++) {
@@ -44,7 +43,7 @@ const MapSection = () => {
   const callbackMaxFilter = (min, max) => {
     setMinFilterStar(min);
     setMaxFilterStar(max)
-    getAverageRatingRestaurants(restaurantsList, min, max);
+    // getAverageRatingRestaurants(restaurantsList, min, max);
   };
 
   const callbackGetService = (service) => {
@@ -62,28 +61,30 @@ const MapSection = () => {
     ]);
   };
 
-  const getAverageRatingRestaurants = (listOfRestaurants, min, max) => {
-    const average = (array) => array.reduce((a, b) => a + b) / array.length;
-    const restaurantListStars = [];
+  // TODO : Décommenter pour JSON vérsion
 
-    let listRestorants = [];
-    listOfRestaurants.map((restaurant) => {
+  // const getAverageRatingRestaurants = (listOfRestaurants, min, max) => {
+  //   const average = (array) => array.reduce((a, b) => a + b) / array.length;
+  //   const restaurantListStars = [];
 
-      // for (let i = 0; i < restaurant.ratings.length; i++) {
-      //   restaurantListStars.push(restaurant.ratings[i].stars);
-      // }
-      restaurantListStars.push(restaurant.rating)
+  //   let listRestorants = [];
+  //   listOfRestaurants.map((restaurant) => {
 
-      if (
-        average(restaurantListStars) >= min &&
-        average(restaurantListStars) <= max
-      ) {
-        listRestorants.push(restaurant);
-      }
-    });
-    setFilteredRestorantsMap(listRestorants);
-    setRestaurantsList(listRestorants);
-  };
+  //     for (let i = 0; i < restaurant.ratings.length; i++) {
+  //       restaurantListStars.push(restaurant.ratings[i].stars);
+  //     }
+  //     restaurantListStars.push(restaurant.rating)
+
+  //     if (
+  //       average(restaurantListStars) >= min &&
+  //       average(restaurantListStars) <= max
+  //     ) {
+  //       listRestorants.push(restaurant);
+  //     }
+  //   });
+  //   setFilteredRestorantsMap(listRestorants);
+  //   setRestaurantsList(listRestorants);
+  // };
 
   const getCallbackReview = (selectedRestaurant) => {
     setFilteredRestorantsMap(selectedRestaurant);

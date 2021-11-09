@@ -1,6 +1,6 @@
 .container_restaurants {
   display: flex;
-  background-color: rgba(114, 104, 255, 0.137);
+  background-color: rgba(53, 53, 61, 0.137);
   flex-direction: column;
   height: 100vh;
   overflow-y: auto;

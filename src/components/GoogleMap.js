@@ -1,7 +1,7 @@
 import React from "react";
 import { useRef, useState, useEffect } from "react";
 import style from "../assets/styles/map.module.css";
-// import { restaurants } from '../assets/restaurants';
+import { restaurants } from '../assets/restaurants';
 import marker from "../assets/images/cutlery.png";
 import myPosition from "../assets/images/location.png";
 import logo from "../assets/images/logo.png";
@@ -27,11 +27,12 @@ const Map = (props) => {
   const [autocomplete, setAutocomplete] = useState(null);
   // Default geolocation Marseille, France
   const [geolocation, setGeolocation] = useState({ lat: 43.2965, lng: 5.3698 });
-  const [currentCenter, setcurrentCenter] = useState({ lat: 0, lng: 0 });
+  // const [currentCenter, setcurrentCenter] = useState({ lat: 0, lng: 0 });
   const [service, setService] = useState();
   const [restaurantsDataApiResults, setRestaurantsDataApiResults] = useState({
     data: [],
   });
+  console.log(restaurantsDataApiResults)
   const refMap = useRef(null);
  
   window.onload = () => {
@@ -55,10 +56,10 @@ const Map = (props) => {
         lat: autocomplete.getPlace().geometry.location.lat(),
         lng: autocomplete.getPlace().geometry.location.lng(),
       });
-      setcurrentCenter({
-        lat: autocomplete.getPlace().geometry.location.lat(),
-        lng: autocomplete.getPlace().geometry.location.lng(),
-      });
+      // setcurrentCenter({
+      //   lat: autocomplete.getPlace().geometry.location.lat(),
+      //   lng: autocomplete.getPlace().geometry.location.lng(),
+      // });
       hideMsgAddressError();
     } catch (error) {
       showMsgAddressError();
@@ -81,7 +82,7 @@ const Map = (props) => {
       lat = refMap.current.state.map.getCenter().lat();
       lon = refMap.current.state.map.getCenter().lng();
     }
-    setcurrentCenter({ lat: lat, lng: lon });
+    // setcurrentCenter({ lat: lat, lng: lon });
     if (bounds) {
       let sortedListRestaurants = restaurantsDataApiResults.data.filter(
         (restaurant) =>
@@ -90,7 +91,7 @@ const Map = (props) => {
             lng: restaurant.geometry.location.lng(),
           })
       );
-      setRestaurantsDataApiResults({ data: sortedListRestaurants });
+      props.mapApiCallback(sortedListRestaurants)
     }
   };
 
@@ -116,7 +117,7 @@ const Map = (props) => {
       new Promise((resolve, reject) => {
         service.nearbySearch(
           {
-            location: currentCenter,
+            location: geolocation,
             radius: 1500,
             type: "restaurant",
           },
@@ -124,14 +125,15 @@ const Map = (props) => {
             if (status !== "OK" || !results) {
               return;
             }
+        
             (results).forEach(element => {
-              if(element.rating >= props.minFilterStar && element.rating <= props.maxFilterStar) {
+              // if(element.rating >= props.minFilterStar && element.rating <= props.maxFilterStar) {
                 filteredData.push(element)
-              }
+              // }
             });
             setRestaurantsDataApiResults({ data: filteredData });
   
-            filteredData=[];
+            // filteredData=[];
   
             if (pagination && pagination.hasNextPage) {
               // Note: nextPage will call the same handler function as the initial call
@@ -168,8 +170,7 @@ const Map = (props) => {
             <img src={logo} alt="good food" />
           </div>
           <div className={style.nextBntContainer}>
-            <span>Click to see next page</span>
-            <button onClick={getNextPage} className={style.nextRestaurantsBtn}> next <FontAwesomeIcon icon="angle-right"/> </button>
+            <button onClick={getNextPage} className={style.nextRestaurantsBtn}> Show more restaurants <FontAwesomeIcon icon="angle-right"/> </button>
           </div>
         </div>
         <div id="search-msg-error" className={style.searchMsgError}>
@@ -185,7 +186,7 @@ const Map = (props) => {
           center={geolocation}
           zoom={15}
           onLoad={initService}
-          onCenterChanged={apiResultService}
+          // onCenterChanged={apiResultService}
         >
           <Marker icon={myPosition} position={geolocation} />
           <MarkerClusterer
@@ -214,10 +215,8 @@ const Map = (props) => {
               className={style.inputSearch}
             />
           </Autocomplete>
-          {/* Child components, such as markers, info windows, etc. */}
           <></>
         </GoogleMap>
-        {/* <BtnNextRestaurant getNextPageCallback={getNextPage}></BtnNextRestaurant> */}
       </div>
     </LoadScript>
   );
