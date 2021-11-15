@@ -3,7 +3,12 @@ import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { Autocomplete } from "@react-google-maps/api";
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faPlusSquare} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import style from "../assets/styles/add_restaurant.module.css";
+
+library.add(faPlusSquare)
 
 let autocomplete = null;
 const AddRestaurant = ({ callbackAddRestaurant }) => {
@@ -47,7 +52,7 @@ const AddRestaurant = ({ callbackAddRestaurant }) => {
   return (
     <>
       <Button variant="primary" onClick={handleShow} className={style.add_restaurant_btn_modal}>
-        Add new restaurant
+        Add restaurant  <FontAwesomeIcon icon="plus-square"/>
       </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -80,7 +85,7 @@ const AddRestaurant = ({ callbackAddRestaurant }) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="success" onClick={addRestaurant}>
+          <Button className={style.add_restaurant_btn_add} variant="success" onClick={addRestaurant}>
             Add
           </Button>
           <Button variant="secondary" onClick={handleClose}>

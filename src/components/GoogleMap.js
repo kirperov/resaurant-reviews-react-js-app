@@ -6,7 +6,7 @@ import marker from "../assets/images/cutlery.png";
 import myPosition from "../assets/images/location.png";
 import logo from "../assets/images/logo.png";
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faAngleRight} from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   GoogleMap,
@@ -16,7 +16,7 @@ import {
   Autocomplete
 } from "@react-google-maps/api";
  
-library.add(faAngleRight)
+library.add(faArrowRight)
 const containerStyle = {
   height: "100%",
 };
@@ -32,7 +32,6 @@ const Map = (props) => {
   const [restaurantsDataApiResults, setRestaurantsDataApiResults] = useState({
     data: [],
   });
-  console.log(restaurantsDataApiResults)
   const refMap = useRef(null);
  
   window.onload = () => {
@@ -170,7 +169,7 @@ const Map = (props) => {
             <img src={logo} alt="good food" />
           </div>
           <div className={style.nextBntContainer}>
-            <button onClick={getNextPage} className={style.nextRestaurantsBtn}> Show more restaurants <FontAwesomeIcon icon="angle-right"/> </button>
+            <button onClick={getNextPage} className={style.nextRestaurantsBtn}> Show more restaurants <FontAwesomeIcon icon="arrow-right"/> </button>
           </div>
         </div>
         <div id="search-msg-error" className={style.searchMsgError}>

@@ -69,17 +69,17 @@
 }
 
 .nextRestaurantsBtn {
+  padding: 1em;
   float: right;
   border-radius: 10px;
   margin-left: 12px;
-  padding: 6px;
-  background-color: rgba(219, 90, 39, 0.747);
+  background-color: rgba(139, 51, 240, 0.527);
 	border: none;
 }
 
 .nextRestaurantsBtn:hover {
   color: rgba(0, 0, 0, 0.76);
-  background-color: rgba(219, 90, 39, 0.288);
+  background-color: rgba(139, 51, 240, 0.404);
 }
 
 /* Extra small devices (phones, 600px and down) */

@@ -6,6 +6,11 @@ import Button from "react-bootstrap/Button";
 import StarRatings from "react-star-ratings";
 import ReactStreetview from "react-streetview";
 import AddReview from "./AddReview";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faEye , faComments, faUser, faMapMarkedAlt} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+library.add(faEye, faComments, faUser, faMapMarkedAlt);
 
 const DetailRestaurant = (props) => {
   const [show, setShow] = useState(false);
@@ -71,19 +76,19 @@ const DetailRestaurant = (props) => {
       </div>
       <div className={style.detail_restaurant_address}>
         <span>
-          <strong>Address: </strong>
+          <strong><FontAwesomeIcon icon="map-marked-alt"/> </strong>
         </span>
         <span>{props.selectedRestaurant.address}</span>
       </div>
       <div className={style.detail_restaurant_comments}>
         <AddReview callbackReviw={getCallbackReview} />
-        <Button variant="primary" onClick={updateRestaurant}>
-          Add new review
+        <Button className={style.detail_restaurant_add_new_btn} variant="primary" onClick={updateRestaurant}>
+          Add new review 
         </Button>
         <div>
           <span>
             <strong>
-              Comments: ({reviewsRestaurant ? reviewsRestaurant.reviews.length : ""}{"0"})
+              Comments <FontAwesomeIcon icon="comments"/> : ({reviewsRestaurant ? reviewsRestaurant.reviews.length : ""}{"0"})
             </strong>
           </span>
         </div>
@@ -92,11 +97,9 @@ const DetailRestaurant = (props) => {
               return (
                 <div key={index} className={style.detail_restaurant_comment}>
                   <span>
-                    <strong>Author: </strong>
-                    {review.author_name}
+                    <strong> <FontAwesomeIcon icon="user"/> {review.author_name} </strong>
                   </span>
                   <span>
-                    <strong>Date: </strong>
                     {review.relative_time_description}
                   </span>
                   <StarRatings
@@ -117,18 +120,16 @@ const DetailRestaurant = (props) => {
 
   return (
     <>
-      <Button className="me-2" onClick={() => handleShow(true)} variant="primary" onClick={handleOnClick}>
-        Details
+      <Button  className={style.detail_restaurant_details_btn} onClick={() => handleShow(true)} variant="primary" onClick={handleOnClick}>
+        Details  <FontAwesomeIcon icon="eye"/>
       </Button>
-      <Modal fullscreen={true} show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+      <Modal  fullscreen={true} show={show} onHide={handleClose}>
+        <Modal.Header closeButton className={style.detail_restaurant_header}>
           <Modal.Title>{props.selectedRestaurant.restaurantName}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{listItems}</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
+   
         </Modal.Footer>
       </Modal>
     </>

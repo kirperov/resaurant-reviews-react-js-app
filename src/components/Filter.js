@@ -1,6 +1,10 @@
 import style from "../assets/styles/filter.module.css";
 import { useState, useEffect } from "react";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faFilter} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+library.add(faFilter);
 const Filter = ({ callbackFilter }) => {
   const [filterMin, setFilterMin] = useState(1);
   const [filterMax, setFilterMax] = useState(5);
@@ -18,7 +22,7 @@ const Filter = ({ callbackFilter }) => {
   }, [filterMin, filterMax]);
   return (
     <div className={style.filter_container}>
-      <label>Filter by stars </label>
+      <label>Filter by stars <FontAwesomeIcon icon="filter"/> </label>
       <form>
         <span>Min </span>
         <select onChange={handleChangeMin}>
