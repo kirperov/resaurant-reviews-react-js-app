@@ -25,6 +25,7 @@ let getNextPage;
 const Map = (props) => {
   let filteredData=[];
   const [autocomplete, setAutocomplete] = useState(null);
+  const [countNextLimit, setCountNextLimit] = useState({count: 0});
   // Default geolocation Marseille, France
   const [geolocation, setGeolocation] = useState({ lat: 43.2965, lng: 5.3698 });
   // const [currentCenter, setcurrentCenter] = useState({ lat: 0, lng: 0 });
@@ -63,22 +64,15 @@ const Map = (props) => {
   };
 
   useEffect(() => {
+    apiResultService();
+  }, [geolocation]);
+
+  useEffect(() => {
     props.mapApiCallback(restaurantsDataApiResults.data);
   }, [restaurantsDataApiResults]);
 
-  // useEffect(() => {
-  //   apiResultService();
-  // }, [props.minFilterStar, props.maxFilterStar]);
-
   const checkBounds = () => {
     let bounds = refMap.current.state.map.getBounds();
-    let lat = 0;
-    let lon = 0;
-    if (refMap.current.state.map.getCenter() !== undefined) {
-      lat = refMap.current.state.map.getCenter().lat();
-      lon = refMap.current.state.map.getCenter().lng();
-    }
-    // setcurrentCenter({ lat: lat, lng: lon });
     if (bounds) {
       let sortedListRestaurants = restaurantsDataApiResults.data.filter(
         (restaurant) =>
@@ -121,20 +115,13 @@ const Map = (props) => {
             if (status !== "OK" || !results) {
               return;
             }
-   
-            // (results).forEach(element => {
-            //   // if(element.rating >= props.minFilterStar && element.rating <= props.maxFilterStar) {
-            //     filteredData.push(element)
-            //   // }
-            // });
-            console.log(results)
             setRestaurantsDataApiResults({ data: results });
-
+            
             if (pagination && pagination.hasNextPage) {
               // Note: nextPage will call the same handler function as the initial call
               getNextPage = () => {
+                setCountNextLimit({count: countNextLimit.count ++})
                 pagination.nextPage();
-                console.log('test')
               };
             }
           }
@@ -166,12 +153,12 @@ const Map = (props) => {
             <img src={logo} alt="good food" />
           </div>
           <div className={style.nextBntContainer}>
-            <button onClick={getNextPage} className={style.nextRestaurantsBtn}> Show more restaurants <FontAwesomeIcon icon="arrow-right"/> </button>
+            {(countNextLimit.count < 2) ? restaurantsDataApiResults.data.length > 0 ? <button onClick={getNextPage} className={style.nextRestaurantsBtn}> Show more restaurants <FontAwesomeIcon icon="arrow-right"/> </button> : "" :"No more restaurants"}
+
           </div>
         </div>
         <div id="search-msg-error" className={style.searchMsgError}>
-          {" "}
-          Veillez choisir l'adresse dans la liste{" "}
+          Veillez choisir l'adresse dans la liste
         </div>
         <GoogleMap
           ref={refMap}

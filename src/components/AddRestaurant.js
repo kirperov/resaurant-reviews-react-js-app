@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { Autocomplete } from "@react-google-maps/api";
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPlusSquare} from '@fortawesome/free-solid-svg-icons'
+import { faPlusSquare, faStar} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import style from "../assets/styles/add_restaurant.module.css";
 
@@ -51,8 +51,8 @@ const AddRestaurant = ({ callbackAddRestaurant }) => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow} className={style.add_restaurant_btn_modal}>
-        Add restaurant  <FontAwesomeIcon icon="plus-square"/>
+      <span><strong>Add restaurant </strong> </span><Button variant="primary" onClick={handleShow} className={style.add_restaurant_btn_modal}>
+     <FontAwesomeIcon icon="plus-square"/>
       </Button>
 
       <Modal show={show} onHide={handleClose}>
