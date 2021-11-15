@@ -17,9 +17,10 @@ const AddReview = ({ callbackReviw }) => {
   }, [rating, comment, username]);
 
   return (
-    <div>
-      <label>Your name </label>
+    <div className={style.detail_restaurant_review_form}>
+      <span> <strong>Your review </strong></span>
       <input
+        placeholder="Enter your username"
         onChange={(event) => {
           setUserName(event.target.value);
         }}

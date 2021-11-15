@@ -56,7 +56,7 @@ const AddRestaurant = ({ callbackAddRestaurant }) => {
       </Button>
 
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+        <Modal.Header className={style.add_restaurant_header} closeButton>
           <Modal.Title>Add new restaurant</Modal.Title>
         </Modal.Header>
         <Modal.Body>

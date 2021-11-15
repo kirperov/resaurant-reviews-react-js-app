@@ -42,7 +42,18 @@ const MapSection = () => {
 
   const callbackMaxFilter = (min, max) => {
     setMinFilterStar(min);
-    setMaxFilterStar(max)
+    setMaxFilterStar(max);
+    let filteredRestaurants = [];
+    // if(element.rating >= props.minFilterStar && element.rating <= props.maxFilterStar) { 
+
+    // }
+    filteredRestorantsMap.forEach(element => {
+  if(element.rating >= min && element.rating <= max) { 
+     filteredRestaurants.push(element)
+    }
+   
+    });
+    setFilteredRestorantsMap(filteredRestaurants)
     // getAverageRatingRestaurants(restaurantsList, min, max);
   };
 

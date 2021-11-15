@@ -16,7 +16,7 @@ import {
   Autocomplete
 } from "@react-google-maps/api";
  
-library.add(faArrowRight)
+library.add(faArrowRight);
 const containerStyle = {
   height: "100%",
 };
@@ -43,6 +43,7 @@ const Map = (props) => {
         });
       });
     }
+    apiResultService();
   };
 
   const onLoad = (autocompleted) => {
@@ -55,10 +56,6 @@ const Map = (props) => {
         lat: autocomplete.getPlace().geometry.location.lat(),
         lng: autocomplete.getPlace().geometry.location.lng(),
       });
-      // setcurrentCenter({
-      //   lat: autocomplete.getPlace().geometry.location.lat(),
-      //   lng: autocomplete.getPlace().geometry.location.lng(),
-      // });
       hideMsgAddressError();
     } catch (error) {
       showMsgAddressError();
@@ -69,9 +66,9 @@ const Map = (props) => {
     props.mapApiCallback(restaurantsDataApiResults.data);
   }, [restaurantsDataApiResults]);
 
-  useEffect(() => {
-    apiResultService();
-  }, [props.minFilterStar, props.maxFilterStar]);
+  // useEffect(() => {
+  //   apiResultService();
+  // }, [props.minFilterStar, props.maxFilterStar]);
 
   const checkBounds = () => {
     let bounds = refMap.current.state.map.getBounds();
@@ -124,20 +121,20 @@ const Map = (props) => {
             if (status !== "OK" || !results) {
               return;
             }
-        
-            (results).forEach(element => {
-              // if(element.rating >= props.minFilterStar && element.rating <= props.maxFilterStar) {
-                filteredData.push(element)
-              // }
-            });
-            setRestaurantsDataApiResults({ data: filteredData });
-  
-            // filteredData=[];
-  
+   
+            // (results).forEach(element => {
+            //   // if(element.rating >= props.minFilterStar && element.rating <= props.maxFilterStar) {
+            //     filteredData.push(element)
+            //   // }
+            // });
+            console.log(results)
+            setRestaurantsDataApiResults({ data: results });
+
             if (pagination && pagination.hasNextPage) {
               // Note: nextPage will call the same handler function as the initial call
               getNextPage = () => {
                 pagination.nextPage();
+                console.log('test')
               };
             }
           }
@@ -185,7 +182,6 @@ const Map = (props) => {
           center={geolocation}
           zoom={15}
           onLoad={initService}
-          // onCenterChanged={apiResultService}
         >
           <Marker icon={myPosition} position={geolocation} />
           <MarkerClusterer

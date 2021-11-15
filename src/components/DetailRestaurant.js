@@ -85,7 +85,7 @@ const DetailRestaurant = (props) => {
         <Button className={style.detail_restaurant_add_new_btn} variant="primary" onClick={updateRestaurant}>
           Add new review 
         </Button>
-        <div>
+        <div className={style.detail_restaurant_comments_title}>
           <span>
             <strong>
               Comments <FontAwesomeIcon icon="comments"/> : ({reviewsRestaurant ? reviewsRestaurant.reviews.length : ""}{"0"})
