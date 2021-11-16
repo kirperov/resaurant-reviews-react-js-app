@@ -23,18 +23,16 @@ const containerStyle = {
 const libraries = ["places"];
 let getNextPage;
 const Map = (props) => {
-  let filteredData=[];
   const [autocomplete, setAutocomplete] = useState(null);
   const [countNextLimit, setCountNextLimit] = useState({count: 0});
   // Default geolocation Marseille, France
   const [geolocation, setGeolocation] = useState({ lat: 43.2965, lng: 5.3698 });
-  // const [currentCenter, setcurrentCenter] = useState({ lat: 0, lng: 0 });
   const [service, setService] = useState();
   const [restaurantsDataApiResults, setRestaurantsDataApiResults] = useState({
     data: [],
   });
   const refMap = useRef(null);
- 
+
   window.onload = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -50,6 +48,13 @@ const Map = (props) => {
   const onLoad = (autocompleted) => {
     setAutocomplete(autocompleted);
   };
+
+  useEffect(() => {
+    let filteredMinMax = showMinMaxRestaurantsResults(restaurantsDataApiResults.data);
+    props.mapApiCallback(filteredMinMax);
+
+   }, [props.minFilterStar, props.maxFilterStar]);
+
 
   const onPlaceChanged = () => {
     try {
@@ -68,8 +73,20 @@ const Map = (props) => {
   }, [geolocation]);
 
   useEffect(() => {
-    props.mapApiCallback(restaurantsDataApiResults.data);
+    let filteredMinMax = showMinMaxRestaurantsResults(restaurantsDataApiResults.data);
+    props.mapApiCallback(filteredMinMax);
   }, [restaurantsDataApiResults]);
+
+  const showMinMaxRestaurantsResults = (filteredRestorantsMap) => {
+    let filteredRestaurants = [];
+    filteredRestorantsMap.forEach(element => {
+      if(element.rating >= props.minFilterStar && element.rating <= props.maxFilterStar) {
+        filteredRestaurants.push(element);
+      }
+    });
+    return filteredRestaurants;
+  };
+ 
 
   const checkBounds = () => {
     let bounds = refMap.current.state.map.getBounds();
@@ -81,7 +98,8 @@ const Map = (props) => {
             lng: restaurant.geometry.location.lng(),
           })
       );
-      props.mapApiCallback(sortedListRestaurants)
+      let filteredRestaurantsWithMinMax = showMinMaxRestaurantsResults(sortedListRestaurants);
+      props.mapApiCallback(filteredRestaurantsWithMinMax)
     }
   };
 
@@ -153,7 +171,7 @@ const Map = (props) => {
             <img src={logo} alt="good food" />
           </div>
           <div className={style.nextBntContainer}>
-            {(countNextLimit.count < 2) ? restaurantsDataApiResults.data.length > 0 ? <button onClick={getNextPage} className={style.nextRestaurantsBtn}> Show more restaurants <FontAwesomeIcon icon="arrow-right"/> </button> : "" :"No more restaurants"}
+            {(countNextLimit.count < 1) ? restaurantsDataApiResults.data.length > 0 ? <button onClick={getNextPage} className={style.nextRestaurantsBtn}> Show more restaurants <FontAwesomeIcon icon="arrow-right"/> </button> : "" :"No more restaurants"}
 
           </div>
         </div>
@@ -177,11 +195,11 @@ const Map = (props) => {
             options={options}
           >
             {(clusterer) =>
-              restaurantsDataApiResults.data.map((restaurantLocation) => (
+              props.newListRestaurants.map((restaurantLocation) => (
                 <Marker
                   icon={marker}
                   key={restaurantLocation.place_id}
-                  position={restaurantLocation.geometry.location}
+                  position={{ lat: restaurantLocation.lat, lng: restaurantLocation.long }}
                   clusterer={clusterer}
                 />
               ))

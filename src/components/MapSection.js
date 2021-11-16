@@ -26,6 +26,7 @@ const MapSection = () => {
   const mapCallbackApiData = (restaurantApiData) => {
     let sortedRestaurantsData = [];
     for (let i = 0; i < restaurantApiData.length; i++) {
+
       sortedRestaurantsData.push({
         place_id: restaurantApiData[i].place_id,
         restaurantName: restaurantApiData[i].name,
@@ -43,20 +44,8 @@ const MapSection = () => {
   const callbackMaxFilter = (min, max) => {
     setMinFilterStar(min);
     setMaxFilterStar(max);
-    let filteredRestaurants = [];
-    // if(element.rating >= props.minFilterStar && element.rating <= props.maxFilterStar) { 
-
-    // }
-    filteredRestorantsMap.forEach(element => {
-  if(element.rating >= min && element.rating <= max) { 
-     filteredRestaurants.push(element)
-    }
-   
-    });
-    setFilteredRestorantsMap(filteredRestaurants)
-    // getAverageRatingRestaurants(restaurantsList, min, max);
   };
-
+ 
   const callbackGetService = (service) => {
     setService(service);
   };
