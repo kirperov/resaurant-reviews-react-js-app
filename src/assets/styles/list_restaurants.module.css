@@ -2,7 +2,7 @@
   display: flex;
   background-color: rgba(53, 53, 61, 0.137);
   flex-direction: column;
-  height: 100vh;
+  height: 90vh;
   overflow-y: auto;
   padding-bottom: 20%;
 }

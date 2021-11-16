@@ -13,6 +13,10 @@ const ListRestaurants = (props) => {
     props.callbackReview(props.listRestaurants);
   };
 
+  const callbackRestaurantWithReview = (newRestaurantWithReview) => {
+    console.log(newRestaurantWithReview)
+  }
+
   const listItems = props.listRestaurants.map((restaurant, index) => (
     <div key={restaurant.restaurantName + restaurant.place_id}>
       <div className={style.list_restaurants_item}>
@@ -30,6 +34,7 @@ const ListRestaurants = (props) => {
             callbackReviw={getCallbackReview}
             index={index}
             service={props.service}
+            callbackRestaurantWithReview={callbackRestaurantWithReview}
           />
         </div>
       </div>

@@ -35,6 +35,13 @@ const MapSection = () => {
         long: restaurantApiData[i].geometry.location.lng(),
         rating: restaurantApiData[i].rating,
         user_ratings_total: restaurantApiData[i].user_ratings_total,
+        reviews: [
+          {
+            author_name: "",
+            rating: 0,
+            text: ""
+          }
+        ]
       });
     }
     setRestaurantsList(sortedRestaurantsData);
@@ -90,7 +97,6 @@ const MapSection = () => {
     setFilteredRestorantsMap(selectedRestaurant);
     setRestaurantsList(selectedRestaurant);
   };
-
   return (
     <div>
       <div className={style.map_section}>

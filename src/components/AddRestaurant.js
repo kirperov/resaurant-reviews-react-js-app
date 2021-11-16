@@ -42,6 +42,13 @@ const AddRestaurant = ({ callbackAddRestaurant }) => {
       long: long,
       rating: 0,
       user_ratings_total: 0,
+      reviews: [
+        // {
+        //   author_name: "",
+        //   rating: 0,
+        //   text:"",
+        // }
+      ]
     });
   };
 

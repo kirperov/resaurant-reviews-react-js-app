@@ -12,32 +12,41 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 library.add(faEye, faComments, faUser, faMapMarkedAlt);
 
-const DetailRestaurant = (props) => {
+const DetailRestaurant = ({selectedRestaurant, service, callbackRestaurantWithReview}) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
- 
   const [newUsername, setNewUsername] = useState();
   const [newComment, setNewComment] = useState();
   const [newRating, setNewRating] = useState(0);
+  const [addedReview , setAddedReview] = useState(false)
   const [reviewsRestaurant, setReviewsRestaurant] = useState();
+
   const handleService = () => {
-    if(props.selectedRestaurant.place_id) {
-      props.service.getDetails(
+    if(selectedRestaurant.place_id && addedReview === false) {
+      service.getDetails(
         {
-          placeId: props.selectedRestaurant.place_id,
+          placeId: selectedRestaurant.place_id,
         },
         function (place, status) {
-          setReviewsRestaurant(place);
+          if(place!==null) {
+            setReviewsRestaurant(place);
+          } else {
+            setReviewsRestaurant(selectedRestaurant);
+          }
         }
       );
     }
-  };
+};
 
   const handleOnClick = () => {
     handleService();
     handleShow();
   };
+
+  // const callbackRestaurantWithReview = (newRestaurantWithReview) => {
+  //   console.log(newRestaurantWithReview)
+  // }
 
   const updateRestaurant = () => {
     reviewsRestaurant.reviews.push({
@@ -45,6 +54,10 @@ const DetailRestaurant = (props) => {
       rating: newRating,
       text: newComment,
     });
+    setAddedReview(true);
+    setReviewsRestaurant(reviewsRestaurant);
+    callbackRestaurantWithReview(reviewsRestaurant)
+    getCallbackReview();
   };
 
   const getCallbackReview = (rating, comment, username) => {
@@ -56,8 +69,8 @@ const DetailRestaurant = (props) => {
   // see https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPanoramaOptions
   const streetViewPanoramaOptions = {
     position: {
-      lat: props.selectedRestaurant.lat,
-      lng: props.selectedRestaurant.long,
+      lat: selectedRestaurant.lat,
+      lng: selectedRestaurant.long,
     },
     pov: { heading: 100, pitch: 0 },
     zoom: 1,
@@ -66,7 +79,7 @@ const DetailRestaurant = (props) => {
   const listItems = (
     <div
       className={style.detail_restaurant_container}
-      key={props.selectedRestaurant.restaurantName}
+      key={selectedRestaurant.restaurantName}
     >
       <div className={style.detail_restaurant_street_view}>
         <ReactStreetview
@@ -78,7 +91,7 @@ const DetailRestaurant = (props) => {
         <span>
           <strong><FontAwesomeIcon icon="map-marked-alt"/> </strong>
         </span>
-        <span>{props.selectedRestaurant.address}</span>
+        <span>{selectedRestaurant.address}</span>
       </div>
       <div className={style.detail_restaurant_comments}>
         <AddReview callbackReviw={getCallbackReview} />
@@ -121,16 +134,13 @@ const DetailRestaurant = (props) => {
   return (
     <>
       <Button  className={style.detail_restaurant_details_btn} onClick={() => handleShow(true)} variant="primary" onClick={handleOnClick}>
-        Details  <FontAwesomeIcon icon="eye"/>
+        See <FontAwesomeIcon icon="eye"/>
       </Button>
       <Modal  fullscreen={true} show={show} onHide={handleClose}>
         <Modal.Header closeButton className={style.detail_restaurant_header}>
-          <Modal.Title>{props.selectedRestaurant.restaurantName}</Modal.Title>
+          <Modal.Title>{selectedRestaurant.restaurantName}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{listItems}</Modal.Body>
-        <Modal.Footer>
-   
-        </Modal.Footer>
       </Modal>
     </>
   );

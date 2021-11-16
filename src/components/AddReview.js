@@ -18,7 +18,7 @@ const AddReview = ({ callbackReviw }) => {
 
   return (
     <div className={style.detail_restaurant_review_form}>
-      <span> <strong>Your review </strong></span>
+      <span><strong>Your review </strong></span>
       <input
         placeholder="Enter your username"
         onChange={(event) => {
