@@ -4,7 +4,6 @@ import ListRestaurants from "../components/ListRestaurants";
 import style from "../assets/styles/map_section.module.css";
 import { ErrorBoundary } from "react-error-boundary";
 import Filter from "../components/Filter";
-// import { restaurants } from "../assets/restaurants";
 import AddRestaurant from "./AddRestaurant";
 
 function ErrorFallback({ error }) {
@@ -17,35 +16,43 @@ function ErrorFallback({ error }) {
 }
 
 const MapSection = () => {
+  const [generalMapData, setGeneralMapData] = useState([]);
   const [restaurantsList, setRestaurantsList] = useState([]);
   const [filteredRestorantsMap, setFilteredRestorantsMap] = useState([]);
   const [service, setService] = useState();
   const [minFilterStar, setMinFilterStar] = useState();
   const [maxFilterStar, setMaxFilterStar] = useState();
+  const [offlineData, setOfflineData ] = useState(true)
 
   const mapCallbackApiData = (restaurantApiData) => {
     let sortedRestaurantsData = [];
-    for (let i = 0; i < restaurantApiData.length; i++) {
-
-      sortedRestaurantsData.push({
-        place_id: restaurantApiData[i].place_id,
-        restaurantName: restaurantApiData[i].name,
-        address: restaurantApiData[i].vicinity,
-        lat: restaurantApiData[i].geometry.location.lat(),
-        long: restaurantApiData[i].geometry.location.lng(),
-        rating: restaurantApiData[i].rating,
-        user_ratings_total: restaurantApiData[i].user_ratings_total,
-        reviews: [
-          {
-            author_name: "",
-            rating: 0,
-            text: ""
-          }
-        ]
-      });
+    if(offlineData) {
+      setGeneralMapData(restaurantApiData);
+      setRestaurantsList(restaurantApiData);
+      setFilteredRestorantsMap(restaurantApiData);
+    } else {
+      for (let i = 0; i < restaurantApiData.length; i++) {
+        sortedRestaurantsData.push({
+          place_id: restaurantApiData[i].place_id,
+          restaurantName: restaurantApiData[i].name,
+          address: restaurantApiData[i].vicinity,
+          lat: restaurantApiData[i].geometry.location.lat(),
+          long: restaurantApiData[i].geometry.location.lng(),
+          rating: restaurantApiData[i].rating,
+          user_ratings_total: restaurantApiData[i].user_ratings_total,
+          reviews: [
+            {
+              author_name: "",
+              rating: 0,
+              text: ""
+            }
+          ]
+        });
+      }
+      setGeneralMapData(sortedRestaurantsData);
+      setRestaurantsList(sortedRestaurantsData);
+      setFilteredRestorantsMap(sortedRestaurantsData);
     }
-    setRestaurantsList(sortedRestaurantsData);
-    setFilteredRestorantsMap(sortedRestaurantsData);
   };
 
   const callbackMaxFilter = (min, max) => {

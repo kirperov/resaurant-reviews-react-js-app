@@ -21,9 +21,11 @@ const DetailRestaurant = ({selectedRestaurant, service, callbackRestaurantWithRe
   const [newRating, setNewRating] = useState(0);
   const [addedReview , setAddedReview] = useState(false)
   const [reviewsRestaurant, setReviewsRestaurant] = useState();
+  const [offlineData, setOfflineData ] = useState(true)
 
   const handleService = () => {
-    if(selectedRestaurant.place_id && addedReview === false) {
+    // console.log(selectedRestaurant)
+    if(selectedRestaurant.place_id && addedReview === false && !offlineData) {
       service.getDetails(
         {
           placeId: selectedRestaurant.place_id,
@@ -36,6 +38,8 @@ const DetailRestaurant = ({selectedRestaurant, service, callbackRestaurantWithRe
           }
         }
       );
+    } else {
+      setReviewsRestaurant(selectedRestaurant);
     }
 };
 
@@ -49,15 +53,28 @@ const DetailRestaurant = ({selectedRestaurant, service, callbackRestaurantWithRe
   // }
 
   const updateRestaurant = () => {
-    reviewsRestaurant.reviews.push({
-      author_name: newUsername,
-      rating: newRating,
-      text: newComment,
-    });
-    setAddedReview(true);
-    setReviewsRestaurant(reviewsRestaurant);
-    callbackRestaurantWithReview(reviewsRestaurant)
-    getCallbackReview();
+    if(!offlineData) {
+      reviewsRestaurant.reviews.push({
+        author_name: newUsername,
+        rating: newRating,
+        text: newComment,
+      });
+      setAddedReview(true);
+      setReviewsRestaurant(reviewsRestaurant);
+      callbackRestaurantWithReview(reviewsRestaurant)
+      getCallbackReview();
+    } else {
+      reviewsRestaurant.reviews.push({
+        author_name: newUsername,
+        rating: newRating,
+        text: newComment,
+      });
+      setAddedReview(true);
+      setReviewsRestaurant(reviewsRestaurant);
+      callbackRestaurantWithReview(reviewsRestaurant)
+      getCallbackReview();
+    }
+
   };
 
   const getCallbackReview = (rating, comment, username) => {

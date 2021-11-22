@@ -28,11 +28,11 @@ const Map = (props) => {
   // Default geolocation Marseille, France
   const [geolocation, setGeolocation] = useState({ lat: 43.2965, lng: 5.3698 });
   const [service, setService] = useState();
+  const [offlineData, setOfflineData ] = useState(true)
   const [restaurantsDataApiResults, setRestaurantsDataApiResults] = useState({
     data: [],
   });
   const refMap = useRef(null);
-
   window.onload = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -42,7 +42,11 @@ const Map = (props) => {
         });
       });
     }
-    apiResultService();
+    if(offlineData) {
+      setRestaurantsDataApiResults({data: restaurants})
+    } else {
+      apiResultService();
+    }
   };
 
   const onLoad = (autocompleted) => {
@@ -69,7 +73,7 @@ const Map = (props) => {
   };
 
   useEffect(() => {
-    apiResultService();
+    // apiResultService();
   }, [geolocation]);
 
   useEffect(() => {
@@ -94,11 +98,12 @@ const Map = (props) => {
       let sortedListRestaurants = restaurantsDataApiResults.data.filter(
         (restaurant) =>
           bounds.contains({
-            lat: restaurant.geometry.location.lat(),
-            lng: restaurant.geometry.location.lng(),
+            lat: restaurant.lat,
+            lng: restaurant.long,
           })
       );
       let filteredRestaurantsWithMinMax = showMinMaxRestaurantsResults(sortedListRestaurants);
+      console.log(filteredRestaurantsWithMinMax)
       props.mapApiCallback(filteredRestaurantsWithMinMax)
     }
   };
