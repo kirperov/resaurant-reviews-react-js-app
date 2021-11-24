@@ -4,6 +4,7 @@ import ListRestaurants from "../components/ListRestaurants";
 import style from "../assets/styles/map_section.module.css";
 import { ErrorBoundary } from "react-error-boundary";
 import Filter from "../components/Filter";
+import OfflineButton from "./OfflineModeBtn"
 import AddRestaurant from "./AddRestaurant";
 
 function ErrorFallback({ error }) {
@@ -22,7 +23,7 @@ const MapSection = () => {
   const [service, setService] = useState();
   const [minFilterStar, setMinFilterStar] = useState();
   const [maxFilterStar, setMaxFilterStar] = useState();
-  const [offlineData, setOfflineData ] = useState(true)
+  const [offlineData, setOfflineData ] = useState()
 
   const mapCallbackApiData = (restaurantApiData) => {
     let sortedRestaurantsData = [];
@@ -36,20 +37,12 @@ const MapSection = () => {
           place_id: restaurantApiData[i].place_id,
           restaurantName: restaurantApiData[i].name,
           address: restaurantApiData[i].vicinity,
-          lat: restaurantApiData[i].geometry.location.lat(),
-          long: restaurantApiData[i].geometry.location.lng(),
+          geometry:  restaurantApiData[i].geometry,
           rating: restaurantApiData[i].rating,
           user_ratings_total: restaurantApiData[i].user_ratings_total,
-          reviews: [
-            {
-              author_name: "",
-              rating: 0,
-              text: ""
-            }
-          ]
+          reviews: restaurantApiData[i].reviews
         });
       }
-      setGeneralMapData(sortedRestaurantsData);
       setRestaurantsList(sortedRestaurantsData);
       setFilteredRestorantsMap(sortedRestaurantsData);
     }
@@ -100,10 +93,17 @@ const MapSection = () => {
   //   setRestaurantsList(listRestorants);
   // };
 
-  const getCallbackReview = (selectedRestaurant) => {
-    setFilteredRestorantsMap(selectedRestaurant);
-    setRestaurantsList(selectedRestaurant);
-  };
+  const callbackOffline = (offlineData) => {
+    setOfflineData(offlineData);
+  }
+
+  const getCallbackRestaurantWithReview = (newRestaurantWithReview) => {
+    for(let i=0; i<restaurantsList.length; i++) {
+      if(newRestaurantWithReview.place_id === restaurantsList[i].place_id) {
+        restaurantsList[i].reviews = newRestaurantWithReview.reviews;
+      }
+    }
+  }
   return (
     <div>
       <div className={style.map_section}>
@@ -114,16 +114,19 @@ const MapSection = () => {
             callbackGetServiceMap={callbackGetService}
             minFilterStar={minFilterStar}
             maxFilterStar={maxFilterStar}
+            offlineData={offlineData}
           />
           <div className={style.list_restaurants}>
             <div className={style.container_options}>
               <Filter callbackFilter={callbackMaxFilter} />
               <AddRestaurant callbackAddRestaurant={callbackAddRestaurant} />
+              <OfflineButton callbackOffline={callbackOffline}></OfflineButton>
             </div>
             <ListRestaurants
-              listRestaurants={filteredRestorantsMap}
-              callbackReview={getCallbackReview}
+              listRestaurants={restaurantsList}
               service={service}
+              offlineData={offlineData}
+              callbackRestaurantWithReview={getCallbackRestaurantWithReview}
             />
           </div>
         </ErrorBoundary>

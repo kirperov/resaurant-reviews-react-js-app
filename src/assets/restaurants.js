@@ -10,16 +10,16 @@ export const restaurants = [
     reviews: [
       {
         author_name: "John",
-        stars: 4,
+        rating: 4,
         text: "Un excellent restaurant, j'y reviendrai ! Par contre il vaut mieux aimer la viande."
       }, 
       {
         author_name: "Joe",
-        stars: 2,
+        rating: 3,
         text: "Tout simplement mon restaurant préféré"
       },       {
         author_name: "Jack",
-        stars: 5,
+        rating: 5,
         text: "Cool !"
       }, 
     ]
@@ -35,12 +35,12 @@ export const restaurants = [
     reviews: [
       {
         author_name: "Antony",
-        stars: 4,
+        rating: 4,
         text: "Une minuscule pizzeria délicieuse cachée juste à côté du Sacré choeur !"
       }, 
       {
         author_name: "Jessica",
-        stars: 2,
+        rating: 2,
         text: "J'ai trouvé ça correct, sans plus"
       }, 
     ]
@@ -56,12 +56,12 @@ export const restaurants = [
     reviews: [
       {
         author_name: "Johanna",
-        stars: 4,
+        rating: 4,
         text: "Une minuscule pizzeria délicieuse cachée juste à côté du Sacré choeur !"
       }, 
       {
         author_name: "Jane",
-        stars: 2,
+        rating: 2,
         text: "J'ai trouvé ça correct, sans plus"
       }, 
     ]

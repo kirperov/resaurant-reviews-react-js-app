@@ -12,69 +12,49 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 library.add(faEye, faComments, faUser, faMapMarkedAlt);
 
-const DetailRestaurant = ({selectedRestaurant, service, callbackRestaurantWithReview}) => {
+const DetailRestaurant = ({selectedRestaurant, service, callbackRestaurantWithReview, offlineData}) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [newUsername, setNewUsername] = useState();
   const [newComment, setNewComment] = useState();
   const [newRating, setNewRating] = useState(0);
-  const [addedReview , setAddedReview] = useState(false)
   const [reviewsRestaurant, setReviewsRestaurant] = useState();
-  const [offlineData, setOfflineData ] = useState(true)
 
   const handleService = () => {
-    // console.log(selectedRestaurant)
-    if(selectedRestaurant.place_id && addedReview === false && !offlineData) {
-      service.getDetails(
-        {
-          placeId: selectedRestaurant.place_id,
-        },
-        function (place, status) {
-          if(place!==null) {
-            setReviewsRestaurant(place);
-          } else {
-            setReviewsRestaurant(selectedRestaurant);
+    if(selectedRestaurant.place_id && !offlineData) {
+      if(typeof(selectedRestaurant.reviews) !== "undefined") {
+        setReviewsRestaurant(selectedRestaurant);
+      } else {
+        service.getDetails(
+          {
+            placeId: selectedRestaurant.place_id,
+          },
+          function (place, status) {
+              setReviewsRestaurant(place);
           }
-        }
-      );
+        );
+      }
     } else {
       setReviewsRestaurant(selectedRestaurant);
     }
-};
+  };
 
   const handleOnClick = () => {
     handleService();
     handleShow();
   };
 
-  // const callbackRestaurantWithReview = (newRestaurantWithReview) => {
-  //   console.log(newRestaurantWithReview)
-  // }
-
   const updateRestaurant = () => {
-    if(!offlineData) {
       reviewsRestaurant.reviews.push({
         author_name: newUsername,
         rating: newRating,
         text: newComment,
       });
-      setAddedReview(true);
+  
       setReviewsRestaurant(reviewsRestaurant);
       callbackRestaurantWithReview(reviewsRestaurant)
       getCallbackReview();
-    } else {
-      reviewsRestaurant.reviews.push({
-        author_name: newUsername,
-        rating: newRating,
-        text: newComment,
-      });
-      setAddedReview(true);
-      setReviewsRestaurant(reviewsRestaurant);
-      callbackRestaurantWithReview(reviewsRestaurant)
-      getCallbackReview();
-    }
-
   };
 
   const getCallbackReview = (rating, comment, username) => {
@@ -118,7 +98,7 @@ const DetailRestaurant = ({selectedRestaurant, service, callbackRestaurantWithRe
         <div className={style.detail_restaurant_comments_title}>
           <span>
             <strong>
-              Comments <FontAwesomeIcon icon="comments"/> : ({reviewsRestaurant ? reviewsRestaurant.reviews.length : ""}{"0"})
+              Comments <FontAwesomeIcon icon="comments"/> : ({reviewsRestaurant ? reviewsRestaurant.reviews.length : "0"})
             </strong>
           </span>
         </div>
@@ -150,7 +130,7 @@ const DetailRestaurant = ({selectedRestaurant, service, callbackRestaurantWithRe
 
   return (
     <>
-      <Button  className={style.detail_restaurant_details_btn} onClick={() => handleShow(true)} variant="primary" onClick={handleOnClick}>
+      <Button className={style.detail_restaurant_details_btn} variant="primary" onClick={handleOnClick}>
         See <FontAwesomeIcon icon="eye"/>
       </Button>
       <Modal  fullscreen={true} show={show} onHide={handleClose}>

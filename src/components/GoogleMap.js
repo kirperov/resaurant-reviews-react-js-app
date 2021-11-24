@@ -28,11 +28,18 @@ const Map = (props) => {
   // Default geolocation Marseille, France
   const [geolocation, setGeolocation] = useState({ lat: 43.2965, lng: 5.3698 });
   const [service, setService] = useState();
-  const [offlineData, setOfflineData ] = useState(true)
   const [restaurantsDataApiResults, setRestaurantsDataApiResults] = useState({
     data: [],
   });
   const refMap = useRef(null);
+
+  const setData = () => {
+    if(props.offlineData) {
+      setRestaurantsDataApiResults({data: restaurants})
+    } else {
+      apiResultService();
+    }
+  }
   window.onload = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -42,12 +49,12 @@ const Map = (props) => {
         });
       });
     }
-    if(offlineData) {
-      setRestaurantsDataApiResults({data: restaurants})
-    } else {
-      apiResultService();
-    }
+    setData();
   };
+
+  useEffect(() => {
+    setData();
+   }, [props.offlineData]);
 
   const onLoad = (autocompleted) => {
     setAutocomplete(autocompleted);
@@ -74,6 +81,7 @@ const Map = (props) => {
 
   useEffect(() => {
     // apiResultService();
+    setData()
   }, [geolocation]);
 
   useEffect(() => {
@@ -91,19 +99,42 @@ const Map = (props) => {
     return filteredRestaurants;
   };
  
+  const initData = () => {
+      for (let n = 0; n < restaurantsDataApiResults.data.length; n++) {
+          for(let j = 0; j < props.newListRestaurants.length; j++) {
+            if(props.newListRestaurants[j].place_id === restaurantsDataApiResults.data[n].place_id) {
+              restaurantsDataApiResults.data[n].reviews =props.newListRestaurants[j].reviews
+            }
+          }
+      }
+      return restaurantsDataApiResults;
+  }
 
   const checkBounds = () => {
+    initData();
     let bounds = refMap.current.state.map.getBounds();
     if (bounds) {
-      let sortedListRestaurants = restaurantsDataApiResults.data.filter(
-        (restaurant) =>
-          bounds.contains({
-            lat: restaurant.lat,
-            lng: restaurant.long,
-          })
-      );
+      let sortedListRestaurants;
+      if(props.offlineData) {
+        sortedListRestaurants = restaurantsDataApiResults.data.filter(
+          (restaurant) =>
+            bounds.contains({
+              lat: restaurant.lat,
+              lng: restaurant.long,
+            })
+        );
+      } else {
+
+        sortedListRestaurants = restaurantsDataApiResults.data.filter(
+          (restaurant) =>
+            bounds.contains({
+              lat: restaurant.geometry.location.lat(),
+              lng: restaurant.geometry.location.lng(),
+            })
+        );
+      }
       let filteredRestaurantsWithMinMax = showMinMaxRestaurantsResults(sortedListRestaurants);
-      console.log(filteredRestaurantsWithMinMax)
+ 
       props.mapApiCallback(filteredRestaurantsWithMinMax)
     }
   };
@@ -139,7 +170,6 @@ const Map = (props) => {
               return;
             }
             setRestaurantsDataApiResults({ data: results });
-            
             if (pagination && pagination.hasNextPage) {
               // Note: nextPage will call the same handler function as the initial call
               getNextPage = () => {
@@ -204,7 +234,8 @@ const Map = (props) => {
                 <Marker
                   icon={marker}
                   key={restaurantLocation.place_id}
-                  position={{ lat: restaurantLocation.lat, lng: restaurantLocation.long }}
+                  // position={{ lat: restaurantLocation.lat, lng: restaurantLocation.long }}
+                  position={ !props.offlineData ? restaurantLocation.geometry.location : { lat: restaurantLocation.lat, lng: restaurantLocation.long } }
                   clusterer={clusterer}
                 />
               ))
