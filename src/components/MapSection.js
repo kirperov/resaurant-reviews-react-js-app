@@ -17,9 +17,8 @@ function ErrorFallback({ error }) {
 }
 
 const MapSection = () => {
-  const [generalMapData, setGeneralMapData] = useState([]);
   const [restaurantsList, setRestaurantsList] = useState([]);
-  const [filteredRestorantsMap, setFilteredRestorantsMap] = useState([]);
+  // const [filteredRestorantsMap, setFilteredRestorantsMap] = useState([]);
   const [service, setService] = useState();
   const [minFilterStar, setMinFilterStar] = useState();
   const [maxFilterStar, setMaxFilterStar] = useState();
@@ -28,9 +27,8 @@ const MapSection = () => {
   const mapCallbackApiData = (restaurantApiData) => {
     let sortedRestaurantsData = [];
     if(offlineData) {
-      setGeneralMapData(restaurantApiData);
       setRestaurantsList(restaurantApiData);
-      setFilteredRestorantsMap(restaurantApiData);
+      // setFilteredRestorantsMap(restaurantApiData);
     } else {
       for (let i = 0; i < restaurantApiData.length; i++) {
         sortedRestaurantsData.push({
@@ -44,7 +42,7 @@ const MapSection = () => {
         });
       }
       setRestaurantsList(sortedRestaurantsData);
-      setFilteredRestorantsMap(sortedRestaurantsData);
+      // setFilteredRestorantsMap(sortedRestaurantsData);
     }
   };
 
@@ -62,10 +60,10 @@ const MapSection = () => {
       ...restaurantsList,
       newRestaurant,
     ]);
-    setFilteredRestorantsMap((filteredRestorantsMap) => [
-      ...filteredRestorantsMap,
-      newRestaurant,
-    ]);
+    // setFilteredRestorantsMap((filteredRestorantsMap) => [
+    //   ...filteredRestorantsMap,
+    //   newRestaurant,
+    // ]);
   };
 
   // TODO : Décommenter pour JSON vérsion

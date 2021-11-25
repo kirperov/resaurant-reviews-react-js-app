@@ -234,7 +234,6 @@ const Map = (props) => {
                 <Marker
                   icon={marker}
                   key={restaurantLocation.place_id}
-                  // position={{ lat: restaurantLocation.lat, lng: restaurantLocation.long }}
                   position={ !props.offlineData ? restaurantLocation.geometry.location : { lat: restaurantLocation.lat, lng: restaurantLocation.long } }
                   clusterer={clusterer}
                 />

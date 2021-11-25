@@ -18,8 +18,6 @@ const AddRestaurant = ({ callbackAddRestaurant }) => {
 
   const [name, setName] = useState();
   const [address, setAddress] = useState();
-  const [lat, setLat] = useState({ lat: 0 });
-  const [long, setLong] = useState({ long: 0 });
   const [newRestaurant, setNewRestaurant] = useState({});
   const onLoad = (autocompleted) => {
     autocomplete = autocompleted;
@@ -28,18 +26,15 @@ const AddRestaurant = ({ callbackAddRestaurant }) => {
   const onPlaceChanged = () => {
     try {
       setAddress(autocomplete.getPlace().formatted_address);
-      setLat(autocomplete.getPlace().geometry.location.lat());
-      setLong(autocomplete.getPlace().geometry.location.lng());
     } catch (error) {}
   };
 
   const addRestaurant = () => {
     setNewRestaurant({
-      place_id: 1,
+      place_id: 10,
       restaurantName: name,
       address: address,
-      lat: lat,
-      long: long,
+      geometry:  autocomplete.getPlace().geometry,
       rating: 0,
       user_ratings_total: 0,
       reviews: []
