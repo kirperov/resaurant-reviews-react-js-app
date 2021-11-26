@@ -32,10 +32,10 @@ const AddRestaurant = ({ callbackAddRestaurant }) => {
   const addRestaurant = () => {
     setNewRestaurant({
       place_id: 10,
-      restaurantName: name,
-      address: address,
+      name: name,
+      vicinity: address,
       geometry:  autocomplete.getPlace().geometry,
-      rating: 0,
+      rating: 5,
       user_ratings_total: 0,
       reviews: []
     });

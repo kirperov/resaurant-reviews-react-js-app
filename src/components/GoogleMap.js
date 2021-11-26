@@ -59,6 +59,15 @@ const Map = (props) => {
   const onLoad = (autocompleted) => {
     setAutocomplete(autocompleted);
   };
+  
+  useEffect(() => {
+    if(props.newRestaurant !== null) {
+      if(Object.keys(props.newRestaurant).length > 0) {
+        restaurantsDataApiResults.data.push(props.newRestaurant)
+        // initData();
+      }
+    }
+   }, [props.newRestaurant]);
 
   useEffect(() => {
     let filteredMinMax = showMinMaxRestaurantsResults(restaurantsDataApiResults.data);
@@ -80,7 +89,6 @@ const Map = (props) => {
   };
 
   useEffect(() => {
-    // apiResultService();
     setData()
   }, [geolocation]);
 
@@ -98,7 +106,7 @@ const Map = (props) => {
     });
     return filteredRestaurants;
   };
- 
+
   const initData = () => {
       for (let n = 0; n < restaurantsDataApiResults.data.length; n++) {
           for(let j = 0; j < props.newListRestaurants.length; j++) {
@@ -112,6 +120,8 @@ const Map = (props) => {
 
   const checkBounds = () => {
     initData();
+    console.log(restaurantsDataApiResults.data)
+
     let bounds = refMap.current.state.map.getBounds();
     if (bounds) {
       let sortedListRestaurants;
@@ -124,7 +134,6 @@ const Map = (props) => {
             })
         );
       } else {
-
         sortedListRestaurants = restaurantsDataApiResults.data.filter(
           (restaurant) =>
             bounds.contains({
@@ -193,7 +202,7 @@ const Map = (props) => {
     getRestaurantsApi();
     props.callbackGetServiceMap(service);
   };
-
+  
   return (
     <LoadScript
       id="script-loader"

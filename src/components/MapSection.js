@@ -23,8 +23,10 @@ const MapSection = () => {
   const [minFilterStar, setMinFilterStar] = useState();
   const [maxFilterStar, setMaxFilterStar] = useState();
   const [offlineData, setOfflineData ] = useState()
-
+  const [addedRestaurant, setAddedRestaurant] = useState(null);
   const mapCallbackApiData = (restaurantApiData) => {
+    console.log(restaurantApiData)
+
     let sortedRestaurantsData = [];
     if(offlineData) {
       setRestaurantsList(restaurantApiData);
@@ -60,6 +62,7 @@ const MapSection = () => {
       ...restaurantsList,
       newRestaurant,
     ]);
+    setAddedRestaurant(newRestaurant);
     // setFilteredRestorantsMap((filteredRestorantsMap) => [
     //   ...filteredRestorantsMap,
     //   newRestaurant,
@@ -113,6 +116,7 @@ const MapSection = () => {
             minFilterStar={minFilterStar}
             maxFilterStar={maxFilterStar}
             offlineData={offlineData}
+            newRestaurant={addedRestaurant}
           />
           <div className={style.list_restaurants}>
             <div className={style.container_options}>
