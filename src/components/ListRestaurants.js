@@ -19,11 +19,11 @@ console.log(props.listRestaurants)
   }
 
   const listItems = props.listRestaurants.map((restaurant, index) => (
-    <div key={restaurant.restaurantName + restaurant.place_id}>
+    <div key={index}>
       <div className={style.list_restaurants_item}>
         <div className={style.restaurant_infos}>
-          <span><strong>{restaurant.restaurantName}</strong></span>
-          <span><FontAwesomeIcon icon="map-pin"/> Address: {restaurant.address}</span>
+          <span><strong>{restaurant.name}</strong></span>
+          <span><FontAwesomeIcon icon="map-pin"/> Address: {restaurant.vicinity}</span>
           <span>Ratings ({restaurant.user_ratings_total})</span>
           <ReviewRestaurant
             restaurantRating={restaurant.rating}

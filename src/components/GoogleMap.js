@@ -64,7 +64,6 @@ const Map = (props) => {
     if(props.newRestaurant !== null) {
       if(Object.keys(props.newRestaurant).length > 0) {
         restaurantsDataApiResults.data.push(props.newRestaurant)
-        // initData();
       }
     }
    }, [props.newRestaurant]);
@@ -129,16 +128,16 @@ const Map = (props) => {
         sortedListRestaurants = restaurantsDataApiResults.data.filter(
           (restaurant) =>
             bounds.contains({
-              lat: restaurant.lat,
-              lng: restaurant.long,
+              lat: restaurant.geometry.lat,
+              lng: restaurant.geometry.lng,
             })
         );
       } else {
         sortedListRestaurants = restaurantsDataApiResults.data.filter(
           (restaurant) =>
             bounds.contains({
-              lat: restaurant.geometry.location.lat(),
-              lng: restaurant.geometry.location.lng(),
+              lat: (restaurant.geometry.location!==undefined) ? restaurant.geometry.location.lat() : restaurant.geometry.lat,
+              lng: (restaurant.geometry.location!==undefined) ? restaurant.geometry.location.lng() : restaurant.geometry.lng,
             })
         );
       }
@@ -178,7 +177,19 @@ const Map = (props) => {
             if (status !== "OK" || !results) {
               return;
             }
-            setRestaurantsDataApiResults({ data: results });
+            let setResult = [];
+            results.forEach(result => {
+              setResult.push({
+                place_id: result.place_id,
+                name: result.name,
+                vicinity: result.vicinity,
+                geometry: {lat: result.geometry.location.lat() , lng: result.geometry.location.lng() },
+                rating: result.rating,
+                user_ratings_total: result.user_ratings_total
+              });
+            });
+            setRestaurantsDataApiResults({data: setResult});
+            console.log(restaurantsDataApiResults)
             if (pagination && pagination.hasNextPage) {
               // Note: nextPage will call the same handler function as the initial call
               getNextPage = () => {
@@ -202,7 +213,7 @@ const Map = (props) => {
     getRestaurantsApi();
     props.callbackGetServiceMap(service);
   };
-  
+
   return (
     <LoadScript
       id="script-loader"
@@ -243,7 +254,7 @@ const Map = (props) => {
                 <Marker
                   icon={marker}
                   key={restaurantLocation.place_id}
-                  position={ !props.offlineData ? restaurantLocation.geometry.location : { lat: restaurantLocation.lat, lng: restaurantLocation.long } }
+                  position={{lat: restaurantLocation.geometry.lat, lng: restaurantLocation.geometry.lng}}
                   clusterer={clusterer}
                 />
               ))

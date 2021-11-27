@@ -76,7 +76,7 @@ const DetailRestaurant = ({selectedRestaurant, service, callbackRestaurantWithRe
   const listItems = (
     <div
       className={style.detail_restaurant_container}
-      key={selectedRestaurant.restaurantName}
+      key={selectedRestaurant.name}
     >
       <div className={style.detail_restaurant_street_view}>
         <ReactStreetview
@@ -88,7 +88,7 @@ const DetailRestaurant = ({selectedRestaurant, service, callbackRestaurantWithRe
         <span>
           <strong><FontAwesomeIcon icon="map-marked-alt"/> </strong>
         </span>
-        <span>{selectedRestaurant.address}</span>
+        <span>{selectedRestaurant.vicinity}</span>
       </div>
       <div className={style.detail_restaurant_comments}>
         <AddReview callbackReviw={getCallbackReview} />
@@ -135,7 +135,7 @@ const DetailRestaurant = ({selectedRestaurant, service, callbackRestaurantWithRe
       </Button>
       <Modal  fullscreen={true} show={show} onHide={handleClose}>
         <Modal.Header closeButton className={style.detail_restaurant_header}>
-          <Modal.Title>{selectedRestaurant.restaurantName}</Modal.Title>
+          <Modal.Title>{selectedRestaurant.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{listItems}</Modal.Body>
       </Modal>

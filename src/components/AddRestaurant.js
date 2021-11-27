@@ -10,7 +10,7 @@ import style from "../assets/styles/add_restaurant.module.css";
 
 library.add(faPlusSquare)
 
-let autocomplete = null;
+// let autocomplete = null;
 const AddRestaurant = ({ callbackAddRestaurant }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -19,8 +19,9 @@ const AddRestaurant = ({ callbackAddRestaurant }) => {
   const [name, setName] = useState();
   const [address, setAddress] = useState();
   const [newRestaurant, setNewRestaurant] = useState({});
+  const [autocomplete, setAutocomplete] = useState();
   const onLoad = (autocompleted) => {
-    autocomplete = autocompleted;
+    setAutocomplete(autocompleted)
   };
 
   const onPlaceChanged = () => {
@@ -30,15 +31,17 @@ const AddRestaurant = ({ callbackAddRestaurant }) => {
   };
 
   const addRestaurant = () => {
-    setNewRestaurant({
-      place_id: 10,
-      name: name,
-      vicinity: address,
-      geometry:  autocomplete.getPlace().geometry,
-      rating: 5,
-      user_ratings_total: 0,
-      reviews: []
-    });
+    if(autocomplete.getPlace().geometry) {
+      setNewRestaurant({
+        place_id: 10,
+        name: name,
+        vicinity: address,
+        geometry:  {lat: autocomplete.getPlace().geometry.location.lat() , lng: autocomplete.getPlace().geometry.location.lng()},
+        rating: 0,
+        user_ratings_total: 0,
+        reviews: []
+      });
+    }
   };
 
   useEffect(() => {

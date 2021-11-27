@@ -2,9 +2,10 @@ export const restaurants = [
   {
     place_id: 1,
     restaurantName: "Bronco",
-    address: "39 Rue des Petites Écuries, 75010 Paris",
-    lat: 48.8737815,
-    long: 2.3501649,
+    vicinity: "39 Rue des Petites Écuries, 75010 Paris",
+    geometry: {lat: 48.8737815 , lng: 2.3501649 },
+    // lat: 48.8737815,
+    // long: 2.3501649,
     rating: 4,
     user_ratings_total: 3,
     reviews: [
@@ -27,9 +28,8 @@ export const restaurants = [
   {
     place_id: 2,
     restaurantName: "Babalou",
-    address: "4 Rue Lamarck, 75018 Paris",
-    lat: 48.8865035,
-    long: 2.3442197,
+    vicinity: "4 Rue Lamarck, 75018 Paris",
+    geometry: { lat: 48.8865035, lng: 2.3442197},
     rating: 4,
     user_ratings_total: 3,
     reviews: [
@@ -48,9 +48,8 @@ export const restaurants = [
   {
     place_id: 3,
     restaurantName: "Neko Ramen",
-    address: "4 Rue Lamarck, 75018 Paris",
-    lat: 48.87141,
-    long: 2.3429,
+    vicinity: "4 Rue Lamarck, 75018 Paris",
+    geometry: { lat: 48.87141, lng: 2.3429},
     rating: 4,
     user_ratings_total: 3,
     reviews: [

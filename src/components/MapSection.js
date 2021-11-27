@@ -25,26 +25,24 @@ const MapSection = () => {
   const [offlineData, setOfflineData ] = useState()
   const [addedRestaurant, setAddedRestaurant] = useState(null);
   const mapCallbackApiData = (restaurantApiData) => {
-    console.log(restaurantApiData)
 
     let sortedRestaurantsData = [];
     if(offlineData) {
       setRestaurantsList(restaurantApiData);
-      // setFilteredRestorantsMap(restaurantApiData);
     } else {
       for (let i = 0; i < restaurantApiData.length; i++) {
         sortedRestaurantsData.push({
           place_id: restaurantApiData[i].place_id,
-          restaurantName: restaurantApiData[i].name,
-          address: restaurantApiData[i].vicinity,
-          geometry:  restaurantApiData[i].geometry,
+          name: restaurantApiData[i].name,
+          vicinity: restaurantApiData[i].vicinity,
+          geometry: { lat: restaurantApiData[i].geometry.lat, lng: restaurantApiData[i].geometry.lng },
           rating: restaurantApiData[i].rating,
           user_ratings_total: restaurantApiData[i].user_ratings_total,
           reviews: restaurantApiData[i].reviews
         });
       }
+
       setRestaurantsList(sortedRestaurantsData);
-      // setFilteredRestorantsMap(sortedRestaurantsData);
     }
   };
 

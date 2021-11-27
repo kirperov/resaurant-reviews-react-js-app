@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 library.add(faFilter, faStar);
 const Filter = ({ callbackFilter }) => {
-  const [filterMin, setFilterMin] = useState(1);
+  const [filterMin, setFilterMin] = useState(0);
   const [filterMax, setFilterMax] = useState(5);
 
   const handleChangeMin = (event) => {
@@ -26,6 +26,7 @@ const Filter = ({ callbackFilter }) => {
       <form>
         <span>Min <FontAwesomeIcon icon="star"/></span>
         <select onChange={handleChangeMin}>
+          <option value="0">0</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -34,6 +35,7 @@ const Filter = ({ callbackFilter }) => {
         </select>
         <span>Max <FontAwesomeIcon icon="star"/></span>
         <select onChange={handleChangeMax}>
+          <option value="0">0</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
