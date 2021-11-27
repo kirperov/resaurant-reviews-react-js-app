@@ -32,6 +32,10 @@ const Map = (props) => {
     data: [],
   });
   const refMap = useRef(null);
+  let bounds;
+  if(refMap.current!==null) {
+     bounds = refMap.current.state.map.getBounds();
+  }
 
   const setData = () => {
     if(props.offlineData) {
@@ -40,6 +44,7 @@ const Map = (props) => {
       apiResultService();
     }
   }
+
   window.onload = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -58,6 +63,7 @@ const Map = (props) => {
 
   const onLoad = (autocompleted) => {
     setAutocomplete(autocompleted);
+    setData();
   };
   
   useEffect(() => {
@@ -119,9 +125,6 @@ const Map = (props) => {
 
   const checkBounds = () => {
     initData();
-    console.log(restaurantsDataApiResults.data)
-
-    let bounds = refMap.current.state.map.getBounds();
     if (bounds) {
       let sortedListRestaurants;
       if(props.offlineData) {
@@ -189,7 +192,6 @@ const Map = (props) => {
               });
             });
             setRestaurantsDataApiResults({data: setResult});
-            console.log(restaurantsDataApiResults)
             if (pagination && pagination.hasNextPage) {
               // Note: nextPage will call the same handler function as the initial call
               getNextPage = () => {
