@@ -66,8 +66,8 @@ const DetailRestaurant = ({selectedRestaurant, service, callbackRestaurantWithRe
   // see https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPanoramaOptions
   const streetViewPanoramaOptions = {
     position: {
-      lat: selectedRestaurant.lat,
-      lng: selectedRestaurant.long,
+      lat: selectedRestaurant.geometry.lat,
+      lng: selectedRestaurant.geometry.lng,
     },
     pov: { heading: 100, pitch: 0 },
     zoom: 1,

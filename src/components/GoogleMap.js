@@ -80,7 +80,6 @@ const Map = (props) => {
 
    }, [props.minFilterStar, props.maxFilterStar]);
 
-
   const onPlaceChanged = () => {
     try {
       setGeolocation({
@@ -229,7 +228,6 @@ const Map = (props) => {
           </div>
           <div className={style.nextBntContainer}>
             {(countNextLimit.count < 1) ? restaurantsDataApiResults.data.length > 0 ? <button onClick={getNextPage} className={style.nextRestaurantsBtn}> Show more restaurants <FontAwesomeIcon icon="arrow-right"/> </button> : "" :"No more restaurants"}
-
           </div>
         </div>
         <div id="search-msg-error" className={style.searchMsgError}>

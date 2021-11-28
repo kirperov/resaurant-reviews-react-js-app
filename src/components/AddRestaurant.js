@@ -10,7 +10,6 @@ import style from "../assets/styles/add_restaurant.module.css";
 
 library.add(faPlusSquare)
 
-// let autocomplete = null;
 const AddRestaurant = ({ callbackAddRestaurant }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
