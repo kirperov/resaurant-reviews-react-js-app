@@ -12,10 +12,9 @@ const ListRestaurants = (props) => {
     props.listRestaurants[index] = selectedRestaurant;
     props.callbackReview(props.listRestaurants);
   };
-console.log(props.listRestaurants)
+
   const callbackRestaurantWithReview = (newRestaurantWithReview) => {
     props.callbackRestaurantWithReview(newRestaurantWithReview)
-   
   }
 
   const listItems = props.listRestaurants.map((restaurant, index) => (

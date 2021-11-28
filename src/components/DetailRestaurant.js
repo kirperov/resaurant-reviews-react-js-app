@@ -62,16 +62,19 @@ const DetailRestaurant = ({selectedRestaurant, service, callbackRestaurantWithRe
     setNewComment(comment);
     setNewRating(rating);
   };
-
+  
+  let streetViewPanoramaOptions;
   // see https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPanoramaOptions
-  const streetViewPanoramaOptions = {
-    position: {
-      lat: selectedRestaurant.geometry.lat,
-      lng: selectedRestaurant.geometry.lng,
-    },
-    pov: { heading: 100, pitch: 0 },
-    zoom: 1,
-  };
+  if(typeof(selectedRestaurant.geometry) !== "undefined") {
+     streetViewPanoramaOptions = {
+      position: {
+        lat: selectedRestaurant.geometry.lat,
+        lng: selectedRestaurant.geometry.lng,
+      },
+      pov: { heading: 100, pitch: 0 },
+      zoom: 1,
+    };
+  }
 
   const listItems = (
     <div

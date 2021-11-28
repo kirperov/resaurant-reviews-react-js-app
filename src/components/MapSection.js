@@ -41,7 +41,6 @@ const MapSection = () => {
           reviews: restaurantApiData[i].reviews
         });
       }
-
       setRestaurantsList(sortedRestaurantsData);
     }
   };
@@ -99,10 +98,13 @@ const MapSection = () => {
   const getCallbackRestaurantWithReview = (newRestaurantWithReview) => {
     for(let i=0; i<restaurantsList.length; i++) {
       if(newRestaurantWithReview.place_id === restaurantsList[i].place_id) {
+        restaurantsList[i].user_ratings_total = restaurantsList[i].user_ratings_total +1;
         restaurantsList[i].reviews = newRestaurantWithReview.reviews;
       }
     }
+    mapCallbackApiData(restaurantsList)
   }
+
   return (
     <div>
       <div className={style.map_section}>

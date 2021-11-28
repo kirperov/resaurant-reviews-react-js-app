@@ -115,7 +115,8 @@ const Map = (props) => {
       for (let n = 0; n < restaurantsDataApiResults.data.length; n++) {
           for(let j = 0; j < props.newListRestaurants.length; j++) {
             if(props.newListRestaurants[j].place_id === restaurantsDataApiResults.data[n].place_id) {
-              restaurantsDataApiResults.data[n].reviews =props.newListRestaurants[j].reviews
+              restaurantsDataApiResults.data[n].user_ratings_total = props.newListRestaurants[j].user_ratings_total;
+              restaurantsDataApiResults.data[n].reviews = props.newListRestaurants[j].reviews
             }
           }
       }
@@ -144,7 +145,6 @@ const Map = (props) => {
         );
       }
       let filteredRestaurantsWithMinMax = showMinMaxRestaurantsResults(sortedListRestaurants);
- 
       props.mapApiCallback(filteredRestaurantsWithMinMax)
     }
   };
@@ -185,7 +185,7 @@ const Map = (props) => {
                 place_id: result.place_id,
                 name: result.name,
                 vicinity: result.vicinity,
-                geometry: {lat: result.geometry.location.lat() , lng: result.geometry.location.lng() },
+                geometry: { lat: result.geometry.location.lat(), lng: result.geometry.location.lng() },
                 rating: result.rating,
                 user_ratings_total: result.user_ratings_total
               });
