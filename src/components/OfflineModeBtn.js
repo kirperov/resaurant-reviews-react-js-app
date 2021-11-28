@@ -5,6 +5,7 @@ const [offlineData, setOfflineData ] = useState(false)
 
   const handleCheck = () => {
       if(offlineData) {
+        window.location.reload();
         setOfflineData(false)
       } else {
         setOfflineData(true)
@@ -18,7 +19,7 @@ const [offlineData, setOfflineData ] = useState(false)
   return (
     <div>
         <input onClick={handleCheck} type="checkbox" id="offlineMode" name="offlineMode" />
-        <label for="offlineMode">Offline</label>
+        <label htmlFor="offlineMode">Offline</label>
     </div>
   );
 };

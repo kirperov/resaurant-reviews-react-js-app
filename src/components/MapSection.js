@@ -18,18 +18,14 @@ function ErrorFallback({ error }) {
 
 const MapSection = () => {
   const [restaurantsList, setRestaurantsList] = useState([]);
-  // const [filteredRestorantsMap, setFilteredRestorantsMap] = useState([]);
   const [service, setService] = useState();
   const [minFilterStar, setMinFilterStar] = useState();
   const [maxFilterStar, setMaxFilterStar] = useState();
   const [offlineData, setOfflineData ] = useState()
   const [addedRestaurant, setAddedRestaurant] = useState(null);
+  
   const mapCallbackApiData = (restaurantApiData) => {
-
     let sortedRestaurantsData = [];
-    if(offlineData) {
-      setRestaurantsList(restaurantApiData);
-    } else {
       for (let i = 0; i < restaurantApiData.length; i++) {
         sortedRestaurantsData.push({
           place_id: restaurantApiData[i].place_id,
@@ -42,7 +38,6 @@ const MapSection = () => {
         });
       }
       setRestaurantsList(sortedRestaurantsData);
-    }
   };
 
   const callbackMaxFilter = (min, max) => {
@@ -60,10 +55,6 @@ const MapSection = () => {
       newRestaurant,
     ]);
     setAddedRestaurant(newRestaurant);
-    // setFilteredRestorantsMap((filteredRestorantsMap) => [
-    //   ...filteredRestorantsMap,
-    //   newRestaurant,
-    // ]);
   };
 
   // TODO : Décommenter pour JSON vérsion
@@ -87,7 +78,6 @@ const MapSection = () => {
   //       listRestorants.push(restaurant);
   //     }
   //   });
-  //   setFilteredRestorantsMap(listRestorants);
   //   setRestaurantsList(listRestorants);
   // };
 
