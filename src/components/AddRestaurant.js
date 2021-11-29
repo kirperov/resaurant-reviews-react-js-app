@@ -41,6 +41,7 @@ const AddRestaurant = ({ callbackAddRestaurant }) => {
         reviews: []
       });
     }
+    handleClose();
   };
 
   useEffect(() => {

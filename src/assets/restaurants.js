@@ -4,8 +4,6 @@ export const restaurants = [
     restaurantName: "Bronco",
     vicinity: "39 Rue des Petites Écuries, 75010 Paris",
     geometry: {lat: 48.8737815 , lng: 2.3501649 },
-    // lat: 48.8737815,
-    // long: 2.3501649,
     rating: 4,
     user_ratings_total: 3,
     reviews: [
