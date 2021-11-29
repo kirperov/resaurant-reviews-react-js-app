@@ -117,6 +117,7 @@ const Map = (props) => {
             if(props.newListRestaurants[j].place_id === restaurantsDataApiResults.data[n].place_id) {
               restaurantsDataApiResults.data[n].user_ratings_total = props.newListRestaurants[j].user_ratings_total;
               restaurantsDataApiResults.data[n].reviews = props.newListRestaurants[j].reviews
+              restaurantsDataApiResults.data[n].rating = props.newListRestaurants[j].rating
             }
           }
       }

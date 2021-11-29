@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Map from "../components/GoogleMap";
 import ListRestaurants from "../components/ListRestaurants";
 import style from "../assets/styles/map_section.module.css";
@@ -57,41 +57,15 @@ const MapSection = () => {
     setAddedRestaurant(newRestaurant);
   };
 
-  // TODO : Décommenter pour JSON vérsion
-
-  // const getAverageRatingRestaurants = (listOfRestaurants, min, max) => {
-  //   const average = (array) => array.reduce((a, b) => a + b) / array.length;
-  //   const restaurantListStars = [];
-
-  //   let listRestorants = [];
-  //   listOfRestaurants.map((restaurant) => {
-
-  //     for (let i = 0; i < restaurant.ratings.length; i++) {
-  //       restaurantListStars.push(restaurant.ratings[i].stars);
-  //     }
-  //     restaurantListStars.push(restaurant.rating)
-
-  //     if (
-  //       average(restaurantListStars) >= min &&
-  //       average(restaurantListStars) <= max
-  //     ) {
-  //       listRestorants.push(restaurant);
-  //     }
-  //   });
-  //   setRestaurantsList(listRestorants);
-  // };
-
   const callbackOffline = (offlineData) => {
     setOfflineData(offlineData);
   }
 
   const getCallbackRestaurantWithReview = (newRestaurantWithReview) => {
-    for(let i=0; i<restaurantsList.length; i++) {
-      if(newRestaurantWithReview.place_id === restaurantsList[i].place_id) {
-        restaurantsList[i].user_ratings_total = restaurantsList[i].user_ratings_total +1;
-        restaurantsList[i].reviews = newRestaurantWithReview.reviews;
-      }
-    }
+    let restaurantIndex = restaurantsList.findIndex((restaurant => restaurant.place_id === newRestaurantWithReview.place_id));
+    restaurantsList[restaurantIndex].rating = (restaurantsList[restaurantIndex].rating * restaurantsList[restaurantIndex].user_ratings_total + newRestaurantWithReview.reviews.at(-1).rating)/ (restaurantsList[restaurantIndex].user_ratings_total +1);
+    restaurantsList[restaurantIndex].user_ratings_total = restaurantsList[restaurantIndex].user_ratings_total +1;
+    restaurantsList[restaurantIndex].reviews = newRestaurantWithReview.reviews;
     mapCallbackApiData(restaurantsList)
   }
 
