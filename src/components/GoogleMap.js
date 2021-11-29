@@ -120,7 +120,7 @@ const Map = (props) => {
             }
           }
       }
-      // return restaurantsDataApiResults;
+      return restaurantsDataApiResults;
   }
 
   const checkBounds = () => {
@@ -236,6 +236,7 @@ const Map = (props) => {
         <GoogleMap
           ref={refMap}
           onBoundsChanged={checkBounds}
+          onZoomChanged={checkBounds}
           options={options}
           id="google-map"
           mapContainerStyle={containerStyle}
