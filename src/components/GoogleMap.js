@@ -120,7 +120,7 @@ const Map = (props) => {
             }
           }
       }
-      return restaurantsDataApiResults;
+      // return restaurantsDataApiResults;
   }
 
   const checkBounds = () => {
